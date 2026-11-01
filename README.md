@@ -16,10 +16,11 @@ Als PDF hängt es an jedem [Release](../../releases) und wird bei jedem Deploy u
 
 | Version | Stand | Commit |
 |---|---|---|
-| 2.60.0 | 01.11.2026 22:19 | `d964560` |
+| 2.60.0 | 01.11.2026 22:41 | `413dc01` |
 
 Letzte Änderungen:
 
+- 01.11.2026 – Handbuch-PDF neu gestaltet: Titelseite, Inhaltsverzeichnis, Kästen, Grafiken
 - 01.11.2026 – Allgemein statt persoenlich: Installation, systemd-Vorlagen, KI-Wellen-Fix
 - 01.11.2026 – Micro-Trader v2.60.0 – erste öffentliche Fassung
 
