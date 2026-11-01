@@ -16,10 +16,11 @@ Als PDF hängt es an jedem [Release](../../releases) und wird bei jedem Deploy u
 
 | Version | Stand | Commit |
 |---|---|---|
-| 2.60.0 | 01.11.2026 21:02 | `b9a13fc` |
+| 2.60.0 | 01.11.2026 22:19 | `d964560` |
 
 Letzte Änderungen:
 
+- 01.11.2026 – Allgemein statt persoenlich: Installation, systemd-Vorlagen, KI-Wellen-Fix
 - 01.11.2026 – Micro-Trader v2.60.0 – erste öffentliche Fassung
 
 _Dieser Abschnitt wird bei jedem Update automatisch erzeugt (`tools/stand_aktualisieren.py`)._
