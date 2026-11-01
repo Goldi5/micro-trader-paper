@@ -16,11 +16,11 @@ Als PDF hängt es an jedem [Release](../../releases) und wird bei jedem Deploy u
 
 | Version | Stand | Commit |
 |---|---|---|
-| v2.60.0 | 01.11.2026 21:00 | `b19a522` |
+| v2.60.0 | 01.11.2026 21:00 | `4404bee` |
 
 Letzte Änderungen:
 
-- 01.11.2026 – Erste öffentliche Fassung (v2.60.0). Was enthalten ist: siehe [`docs/ROADMAP-2026-11.md`](docs/ROADMAP-2026-11.md).
+- 01.11.2026 – Micro-Trader v2.60.0 – erste öffentliche Fassung
 
 _Dieser Abschnitt wird bei jedem Update automatisch erzeugt (`tools/stand_aktualisieren.py`)._
 <!-- STAND:END -->
