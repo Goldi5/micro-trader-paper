@@ -188,7 +188,7 @@ rm /opt/micro-trader/.csrf_secret /opt/micro-trader/.session_secret && systemctl
 ## 13. Releases und Handbuch
 
 - Ein Release entsteht auf GitHub über „Releases → Draft a new release“ mit einem Tag wie `v2.60.0`.
-- Die GitHub-Action **Handbuch** erzeugt daraus automatisch `Micro-Trader-Handbuch-<version>.pdf` und hängt es an das Release. Bei jedem Push auf `main` wird das PDF zusätzlich als Download-Artefakt gebaut.
+- Die GitHub-Action **Handbuch** erzeugt daraus automatisch das PDF und hängt es an das Release: als `Micro-Trader-Handbuch.pdf` (fester Link `releases/latest/download/Micro-Trader-Handbuch.pdf`, den die README nutzt) und als `Micro-Trader-Handbuch-<version>.pdf`. Ändert sich bei einem Push auf `main` nur das Handbuch, wird das PDF am neuesten Release ersetzt.
 - `deploy.sh` erzeugt das PDF auch lokal unter `docs/handbuch/Micro-Trader-Handbuch.pdf`.
 - **Gestaltung:** `tools/handbuch_pdf.py` setzt das Markdown in ein eigenes Layout (`docs/handbuch/handbuch.css`) und lässt Chromium das PDF drucken. Kästen entstehen aus `> [!TIP]`, `> [!NOTE]`, `> [!IMPORTANT]` und `> [!WARNING]`, Grafiken aus `<!-- grafik: ablauf -->`, `risikoleiter` und `kennzahlen`. Die Risikoleiter liest ihre Werte beim Bau direkt aus dem Code. Ohne Chromium oder das Paket `markdown` entsteht ein einfaches PDF (`tools/handbuch_pdf_einfach.py`).
 - **Pflege:** Dieses Handbuch ist die Quelle (`docs/handbuch/HANDBUCH.md`). Wer eine Funktion ändert, passt den passenden Abschnitt im selben Pull Request an.

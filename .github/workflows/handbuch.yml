@@ -2,7 +2,7 @@ name: Handbuch
 
 # Erzeugt docs/handbuch/HANDBUCH.md als PDF.
 # - Release veroeffentlicht -> PDF wird an das Release angehaengt.
-# - Push auf main          -> PDF als Download-Artefakt der Action.
+# - Push auf main          -> PDF als Artefakt und am neuesten Release ersetzt.
 on:
   release:
     types: [published]
@@ -11,6 +11,7 @@ on:
     paths:
       - "docs/handbuch/**"
       - "tools/handbuch_pdf*.py"
+      - ".github/workflows/handbuch.yml"
   workflow_dispatch:
 
 permissions:
@@ -41,11 +42,26 @@ jobs:
           python tools/handbuch_pdf.py --version "$VERSION" \
             --aus "Micro-Trader-Handbuch-$VERSION.pdf"
 
+      # Zwei Namen: fester Name fuer den README-Link (releases/latest/download/...)
+      # und einer mit Version. Push auf main ersetzt das PDF am neuesten Release.
       - name: An das Release haengen
-        if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "$VERSION" "Micro-Trader-Handbuch-$VERSION.pdf" --clobber
+        run: |
+          cp "Micro-Trader-Handbuch-$VERSION.pdf" Micro-Trader-Handbuch.pdf
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG="$VERSION"
+          else
+            TAG="$(gh release view --json tagName -q .tagName 2>/dev/null || true)"
+          fi
+          if [ -z "$TAG" ]; then
+            echo "Noch kein Release - nur Artefakt."
+            exit 0
+          fi
+          gh release upload "$TAG" Micro-Trader-Handbuch.pdf --clobber
+          if [ "${{ github.event_name }}" = "release" ]; then
+            gh release upload "$TAG" "Micro-Trader-Handbuch-$VERSION.pdf" --clobber
+          fi
 
       - name: Als Artefakt bereitstellen
         uses: actions/upload-artifact@v4
