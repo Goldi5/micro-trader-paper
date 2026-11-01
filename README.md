@@ -45,10 +45,11 @@ Die KI schlägt vor, feste Regeln entscheiden, was tatsächlich gehandelt wird. 
 
 | Version | Stand | Commit |
 |---|---|---|
-| 2.60.0 | 01.11.2026 21:41 | `47b1b6c` |
+| 2.60.0 | 01.11.2026 22:44 | `841c014` |
 
 Letzte Änderungen:
 
+- 01.11.2026 – README neu gestaltet: Banner, Badges, PDF-Link, Funktionen, Ablauf-Diagramm
 - 01.11.2026 – Handbuch-PDF neu gestaltet: Titelseite, Inhaltsverzeichnis, Kästen, Grafiken
 - 01.11.2026 – Allgemein statt persoenlich: Installation, systemd-Vorlagen, KI-Wellen-Fix
 - 01.11.2026 – Micro-Trader v2.60.0 – erste öffentliche Fassung
