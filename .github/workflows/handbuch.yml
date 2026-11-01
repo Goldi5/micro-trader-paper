@@ -37,7 +37,8 @@ jobs:
       - name: PDF erzeugen
         run: |
           VERSION="${{ github.event.release.tag_name }}"
-          [ -n "$VERSION" ] || VERSION="$(git describe --tags --always)"
+          # Push auf main: Version des letzten Release-Tags (ohne -N-gHASH)
+          [ -n "$VERSION" ] || VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --short HEAD)"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           python tools/handbuch_pdf.py --version "$VERSION" \
             --aus "Micro-Trader-Handbuch-$VERSION.pdf"
@@ -59,7 +60,7 @@ jobs:
             exit 0
           fi
           gh release upload "$TAG" Micro-Trader-Handbuch.pdf --clobber
-          if [ "${{ github.event_name }}" = "release" ]; then
+          if [ "$TAG" = "$VERSION" ]; then
             gh release upload "$TAG" "Micro-Trader-Handbuch-$VERSION.pdf" --clobber
           fi
 
