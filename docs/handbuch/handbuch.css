@@ -1,0 +1,130 @@
+/* Micro-Trader Handbuch – Druck-Stylesheet (Chromium, A4)
+   Farben wie Logo und Banner: Navy, Cyan → Violett, Grün für "gut". */
+:root {
+  --navy: #0B1220; --navy2: #17112F; --ink: #111827; --muted: #5B6475;
+  --cyan: #20D9FF; --cyan-d: #0A8FB0; --violet: #7B5CFF; --violet-d: #5B3FE0;
+  --green: #1FA97A; --amber: #E29A1B; --red: #E04F5F;
+  --line: #E3E6EF; --paper: #F5F6FB; --tint: #EEF0FF;
+  --grad: linear-gradient(90deg, var(--cyan) 0%, var(--violet) 100%);
+}
+
+@page {
+  size: A4;
+  margin: 17mm 18mm 19mm;
+  @bottom-left { content: "Micro-Trader · Handbuch"; font: 500 7.5pt "Inter", Arial, sans-serif; color: #8A93A6; }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 700 8pt "Inter", Arial, sans-serif; color: var(--violet-d); }
+}
+@page :first { margin: 0; @bottom-left { content: none; } @bottom-right { content: none; } }
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "Inter", "DejaVu Sans", Arial, sans-serif; font-size: 10pt; line-height: 1.58; color: var(--ink); margin: 0; font-feature-settings: "cv11", "ss01"; }
+h1, h2, h3, .title, .kicker, .num { font-family: "Space Grotesk", "Inter", Arial, sans-serif; }
+a { color: var(--violet-d); text-decoration: none; }
+strong { font-weight: 650; color: #0B1324; }
+code { font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace; font-size: 8.4pt; background: var(--tint); color: #3B2BB5; padding: .5px 4px; border-radius: 4px; white-space: nowrap; }
+pre { background: var(--navy); color: #DDE6FF; border-radius: 10px; padding: 4mm 5mm; margin: 3mm 0 5mm; font-size: 8.4pt; line-height: 1.55; break-inside: avoid; position: relative; border-left: 3px solid var(--cyan); white-space: pre-wrap; word-break: break-word; }
+pre code { background: none; color: inherit; padding: 0; white-space: inherit; font-size: inherit; }
+pre .kommentar { color: #7F8BA8; }
+pre .prompt { color: var(--cyan); }
+
+/* ── Titelseite ───────────────────────────────────────────── */
+.cover { position: relative; height: 297mm; box-sizing: border-box; padding: 26mm 22mm 18mm; color: #F2F4FF; overflow: hidden;
+  background: radial-gradient(circle at 88% 8%, rgba(123,92,255,.55) 0%, rgba(23,17,47,0) 42%),
+              radial-gradient(circle at 0% 100%, rgba(32,217,255,.22) 0%, rgba(11,18,32,0) 45%),
+              linear-gradient(160deg, #0B1220 0%, #121A33 55%, #17112F 100%);
+  break-after: page; display: flex; flex-direction: column; }
+.cover .gitter { position: absolute; inset: 0; opacity: .5; }
+.cover .oben { position: relative; display: flex; align-items: center; gap: 4mm; }
+.cover .logo { width: 17mm; height: 17mm; border-radius: 4mm; box-shadow: 0 6px 24px rgba(32,217,255,.25); }
+.cover .kicker { font-size: 8.5pt; font-weight: 700; letter-spacing: 2.6px; text-transform: uppercase; color: var(--cyan); }
+.cover .title { position: relative; font-size: 60pt; font-weight: 700; line-height: .95; letter-spacing: -1.5px; margin: 26mm 0 5mm; color: #fff; }
+.cover .title span { color: var(--cyan); }
+.cover .subtitle { position: relative; font-size: 17pt; font-weight: 400; color: #B9C2E6; max-width: 140mm; line-height: 1.35; }
+.cover .subtitle b { color: #fff; font-weight: 600; }
+.cover .pills { position: relative; display: flex; gap: 2.5mm; flex-wrap: wrap; margin-top: 9mm; }
+.cover .pill { font-size: 8.5pt; font-weight: 600; padding: 1.6mm 3.6mm; border-radius: 99px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #E4E8FF; }
+.cover .pill.gruen { border-color: rgba(115,230,176,.5); color: #73E6B0; }
+.cover .chart { position: relative; margin-top: auto; width: 100%; }
+.cover .meta { position: relative; margin-top: 8mm; display: flex; justify-content: space-between; align-items: flex-end; font-size: 8.5pt; color: #8E97B8; border-top: 1px solid rgba(255,255,255,.12); padding-top: 4mm; }
+.cover .meta b { color: #fff; font-weight: 600; font-size: 10pt; }
+
+/* ── Inhaltsverzeichnis ───────────────────────────────────── */
+.toc { break-after: page; }
+.toc .kopf { display: flex; align-items: baseline; gap: 4mm; margin-bottom: 7mm; }
+.toc h2 { font-size: 28pt; font-weight: 700; margin: 0; letter-spacing: -.5px; }
+.toc .kopf span { color: var(--muted); font-size: 10pt; }
+.toc .bar { height: 3px; width: 32mm; background: var(--grad); border-radius: 2px; margin: -4mm 0 7mm; }
+.toc ol { list-style: none; padding: 0; margin: 0; columns: 1; }
+.toc li.c { display: flex; align-items: center; gap: 4mm; margin-top: 2.6mm; padding: 2.2mm 3mm; border-radius: 8px; background: var(--paper); break-inside: avoid; }
+.toc li.c .n { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 11pt; width: 9mm; height: 9mm; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; background: var(--grad); flex: none; }
+.toc li.c .t { font-weight: 650; font-size: 11pt; color: var(--ink); }
+.toc li.c .s { display: block; font-size: 8.3pt; font-weight: 400; color: var(--muted); margin-top: .3mm; }
+.toc a { color: inherit; }
+
+/* ── Kapitel ──────────────────────────────────────────────── */
+main h1 { break-after: avoid; margin: 13mm 0 6mm; padding: 0; font-size: 26pt; font-weight: 700; letter-spacing: -.5px; line-height: 1.25; }
+main h1 .num { display: inline-block; font-size: 12pt; line-height: 1; font-weight: 700; color: #fff; background: var(--violet); padding: 2mm 2.6mm; border-radius: 6px; margin-right: 3.5mm; vertical-align: 5px; }
+main h1::after { content: ""; display: block; height: 3px; width: 32mm; margin-top: 4mm; background: var(--grad); border-radius: 2px; }
+main h2 { font-size: 14pt; font-weight: 700; margin: 8mm 0 2.5mm; break-after: avoid; color: var(--navy); }
+main h2::before { content: ""; display: inline-block; width: 2.2mm; height: 2.2mm; border-radius: 1px; background: var(--violet); margin-right: 2.5mm; vertical-align: middle; transform: translateY(-1px) rotate(45deg); }
+main h3 { font-size: 11pt; font-weight: 700; margin: 5mm 0 1.5mm; break-after: avoid; color: var(--violet-d); }
+.lead { font-size: 11.5pt; line-height: 1.55; color: #2A3142; margin: 0 0 5mm; }
+p { margin: 0 0 2.6mm; }
+p, li { orphans: 3; widows: 3; }
+ul, ol { padding-left: 5.5mm; margin: 1mm 0 3.5mm; }
+li { margin: 1.1mm 0; }
+li::marker { color: var(--violet); font-weight: 700; }
+ol ol, ul ul, ol ul, ul ol { margin: 1mm 0; }
+
+/* Tabellen */
+table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 3mm 0 5mm; font-size: 8.8pt; line-height: 1.42; break-inside: auto; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+tr { break-inside: avoid; }
+th { text-align: left; background: var(--navy); color: #EEF1FF; padding: 2.2mm 3mm; font-weight: 600; font-size: 8.4pt; letter-spacing: .2px; }
+td { padding: 2.1mm 3mm; border-top: 1px solid var(--line); vertical-align: top; }
+tbody tr:nth-child(even) td { background: #F8F9FD; }
+td:first-child { font-weight: 600; }
+td code, th code { white-space: normal; }
+
+/* Kästen (aus > [!TIP] usw.) */
+.box { border-radius: 10px; padding: 3.2mm 5mm 3.2mm 13mm; margin: 4mm 0 5mm; break-inside: avoid; position: relative; font-size: 9.6pt; }
+.box::before { position: absolute; left: 4mm; top: 3.2mm; width: 6mm; height: 6mm; border-radius: 50%; color: #fff; font: 700 9pt "Space Grotesk", sans-serif; display: flex; align-items: center; justify-content: center; }
+.box p:last-child, .box ul:last-child { margin-bottom: 0; }
+.box .box-titel { font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 9pt; letter-spacing: .6px; text-transform: uppercase; margin-bottom: 1mm; }
+.box.tip { background: #E9FBF4; } .box.tip::before { content: "✓"; background: var(--green); } .box.tip .box-titel { color: #11865F; }
+.box.note { background: #E8FAFE; } .box.note::before { content: "i"; background: var(--cyan-d); } .box.note .box-titel { color: var(--cyan-d); }
+.box.important { background: var(--tint); } .box.important::before { content: "★"; background: var(--violet); } .box.important .box-titel { color: var(--violet-d); }
+.box.warning, .box.caution { background: #FFF4E5; } .box.warning::before, .box.caution::before { content: "!"; background: var(--amber); } .box.warning .box-titel, .box.caution .box-titel { color: #A86A00; }
+
+/* Grafiken */
+figure { margin: 4mm 0 6mm; break-inside: avoid; }
+figure svg { display: block; width: 100%; height: auto; }
+figcaption { font-size: 8pt; color: var(--muted); margin-top: 1.5mm; }
+
+/* Kennzahlen-Kacheln */
+.kacheln { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin: 4mm 0 6mm; break-inside: avoid; }
+.kachel { border-radius: 10px; padding: 3.5mm 4mm; background: var(--paper); border: 1px solid var(--line); }
+.kachel .wert { font: 700 19pt/1.05 "Space Grotesk", sans-serif; color: var(--violet-d); }
+.kachel .wert.gruen { color: var(--green); }
+.kachel .lbl { font-size: 8.4pt; font-weight: 600; margin-top: 1.2mm; }
+.kachel .sub { font-size: 7.6pt; color: var(--muted); line-height: 1.35; margin-top: .6mm; }
+
+/* Risikoleiter */
+.leiter td { vertical-align: middle; }
+.leiter td.stufe { font: 700 10pt "Space Grotesk", sans-serif; color: var(--violet-d); width: 10mm; }
+.leiter .balken { height: 2.6mm; border-radius: 2mm; background: var(--grad); }
+.leiter .bwrap { background: #EDEFF6; border-radius: 2mm; width: 26mm; }
+.leiter .tiers span { display: inline-block; font-size: 6.8pt; font-weight: 600; padding: .3mm 1.6mm; margin: .3mm .6mm .3mm 0; border-radius: 99px; background: var(--tint); color: var(--violet-d); white-space: nowrap; }
+.leiter .tiers span.t3, .leiter .tiers span.t6 { background: #FFF0E0; color: #A86A00; }
+.leiter .tiers span.t0 { background: #E9FBF4; color: #11865F; }
+.neg { color: var(--red); font-weight: 600; } .pos { color: var(--green); font-weight: 600; }
+
+/* Schluss */
+.ende { margin-top: 10mm; padding: 6mm; border-radius: 12px; color: #DDE3FF; background: linear-gradient(140deg, #0B1220, #1B1440); break-inside: avoid; font-size: 9pt; }
+.ende b { color: #fff; }
+main { padding-top: 3mm; }
+main > h1:first-child, main > .zusammen:first-child h1 { margin-top: 0; }
+main h2 + ul, main h2 + ol, main h2 + p { break-before: avoid; }
+.zusammen { break-inside: avoid; }
+.leiter { font-size: 8.2pt; }
+.leiter td, .leiter th { padding: 1.8mm 2mm; white-space: nowrap; }
+.leiter td.tiers { white-space: normal; }
