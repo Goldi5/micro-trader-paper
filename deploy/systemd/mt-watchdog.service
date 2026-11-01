@@ -1,0 +1,10 @@
+# Beispiel: Watchdog (Alarme per ntfy)
+[Unit]
+Description=Micro-Trader Watchdog (Alarme per ntfy)
+
+[Service]
+Type=oneshot
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python mt_watchdog.py

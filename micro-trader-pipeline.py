@@ -159,7 +159,11 @@ def run(cmd, timeout=300):
 
 try:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["engine", "ki", "full"], default="full")
+    # 01.11.2026: "ki_welle" fehlte in choices. micro_trader_scheduler startet
+    # die Pipeline mit "--mode ki_welle --welle N"; argparse brach mit
+    # "invalid choice" ab (Ausgabe verworfen) - die KI-Wellen liefen nie.
+    parser.add_argument("--mode", choices=["engine", "ki", "full", "ki_welle"], default="full")
+    parser.add_argument("--welle", type=int, default=0)
     args, _ = parser.parse_known_args()
     mode = args.mode
     log.info(f"=== Pipeline gestartet (mode={mode}) ===\n")

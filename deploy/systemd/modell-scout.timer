@@ -1,0 +1,9 @@
+[Unit]
+Description=Micro-Trader KI-Modell-Scout (Zeitplan)
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

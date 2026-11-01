@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# deploy.sh - neuen Stand von GitHub (main) auf dem LXC einspielen.
+# deploy.sh - neuen Stand von GitHub (main) auf dem Server einspielen.
 #
 # Ablauf: holen -> anzeigen -> nachfragen -> fast-forward -> pruefen
 #         -> Dienste neu starten -> Status.
 # Es wird nie etwas ueberschrieben: lokale Aenderungen, die mit dem neuen
 # Stand kollidieren, lassen das Update abbrechen (git merge --ff-only).
 #
-# Aufruf im LXC:  cd /opt/micro-trader && ./deploy.sh        (mit Rueckfrage)
+# Aufruf:  cd /opt/micro-trader && ./deploy.sh        (mit Rueckfrage)
 #                 ./deploy.sh -y                              (ohne Rueckfrage)
 set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
@@ -26,7 +26,7 @@ if [[ "$ALT" == "$NEU" ]]; then
   exit 0
 fi
 if ! git merge-base --is-ancestor "$ALT" "$NEU"; then
-  echo "ABBRUCH: Der LXC hat Commits, die nicht auf GitHub sind."
+  echo "ABBRUCH: Lokal gibt es Commits, die nicht auf GitHub sind."
   echo "Erst pushen:  git push origin main"
   exit 1
 fi
@@ -47,7 +47,7 @@ fi
 # Dateien, die das Update aus Git entfernt (z. B. Laufzeitdaten, die
 # kuenftig git-ignoriert sind), wuerde git beim Merge LOESCHEN. Sie werden
 # vorher gesichert und danach wieder hingelegt - der Inhalt bleibt.
-SICHERUNG="/root/mt-deploy-sicherung/$(date +%Y%m%d-%H%M%S)"
+SICHERUNG="${MT_DEPLOY_SICHERUNG:-$HOME/mt-deploy-sicherung}/$(date +%Y%m%d-%H%M%S)"
 mapfile -t ENTFERNT < <(git diff --diff-filter=D --name-only "$ALT" "$NEU")
 for f in "${ENTFERNT[@]}"; do
   [[ -f "$f" ]] || continue

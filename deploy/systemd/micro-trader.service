@@ -1,0 +1,14 @@
+# Beispiel: Dashboard (Flask, bindet nur an 127.0.0.1)
+[Unit]
+Description=Micro-Trader Dashboard
+After=network-online.target
+
+[Service]
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python dashboard.py 5300
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

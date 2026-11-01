@@ -78,22 +78,19 @@ Scheduler / Pipeline ──► Trader je Depotart
 
 Ordner: `tests/` (alle Tests), `tools/` (Hilfsskripte), `docs/` (Handbuch, Roadmap, Fachdokumente, `docs/historie/` = ältere Übergaben), `proxy/`, `static/`, `assets/`, `archiv/` (abgelegter Code, u. a. ungenutzte Einmal-Werkzeuge).
 
-## Betrieb (LXC 610, `/opt/micro-trader`)
-
-Update von GitHub einspielen – **immer** über das Skript, nicht `git pull`:
+## Installation und Betrieb
 
 ```bash
-cd /opt/micro-trader && ./deploy.sh
+git clone https://github.com/Goldi5/micro-trader-paper.git /opt/micro-trader
+cd /opt/micro-trader
+python3 -m venv venv && venv/bin/pip install -r requirements.txt
 ```
 
-Tests (laufen in einer Kopie, fassen keine Live-Daten an):
+- Zugangsdaten in `.env` eintragen, Dienste mit den Vorlagen aus [`deploy/systemd/`](deploy/systemd/) einrichten.
+- Updates einspielen mit `./deploy.sh`: Es zeigt die Änderungen, testet und startet die Dienste erst danach neu. Laufzeitdaten bleiben erhalten.
+- Tests mit `./run_tests.sh`: Sie laufen in einer Wegwerf-Kopie und fassen keine Live-Daten an.
 
-```bash
-./run_tests.sh          # Offline-Tests
-./run_tests.sh alle     # alle Tests mit Kopie der Live-Daten
-```
-
-Dienste, Timer, Logs und Fehlerbehebung: Handbuch, Kapitel 9–12.
+Details: Handbuch, Kapitel 9–12.
 
 ## Entwicklung
 

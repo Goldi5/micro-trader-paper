@@ -1,0 +1,10 @@
+# Beispiel: KI-Modell-Scout
+[Unit]
+Description=Micro-Trader KI-Modell-Scout
+
+[Service]
+Type=oneshot
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python modell_scout.py
