@@ -1,0 +1,181 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+ki_cooldown.json
+.bak-*/
+*.bak-*
+.backup/
+.backups/
+backups/
+reports/
+*.log
+.env
+nous_auth.json
+whatsapp_config.json
+security_users.json
+security_audit.json
+*.session
+login_rate.json
+
+# Laufzeit-Noise (Trading/Scan/Profile-Caches)
+depot_*.json
+trader_status.json
+system_log.json
+batch_summary.json
+active_profile.json
+_budget_debug.txt
+.scan_cache.json
+
+# Hermes/Process-Watcher Temp-Files (nicht ins Repo)
+.hermes-tmp.*
+_monitor_tmp*.py
+*.tmp
+.daily_report_sent*
+
+# ── Laufzeit-Daten (Trading, nicht ins Repo) ──
+etf_*.json
+spec_depots/*.json
+spec_depots_paper/
+ki_log.json
+ki_cache_batch.json
+analysis_cache.json
+news_cache.json
+monitor_status_last.json
+notifications.json
+ops_alerts.json
+spec_log.json
+spec_watch.json
+etf_summary.json
+_budget_debug.txt
+cookies.txt
+nul
+.prompt_debug.txt
+_prompt_debug.txt
+
+# Hermes-Interne (nicht ins Repo)
+.hermes/
+*.bak
+depot_audit_report.py
+logs/
+*.bak-*
+_diag*.py
+_dbg*.py
+
+_screen_cache.json
+depot_empfehlung/
+_s3b.py
+_bc.py
+_es.py
+_ms.py
+_km.py
+_tw.py
+_ds.py
+_sm.py
+_ft.py
+_fc.py
+.kurs_cache_2y.json
+
+# Laufzeitdateien (2026-09-27): aendern sich bei jedem Lauf und
+# gehoeren nicht ins Repository. config.json enthaelt den
+# Zeitstempel der Risiko-Aktualisierung, ki_pool.json den
+# Modell-Scout-Stand.
+ki_pool.json
+
+# Laufzeitsperre der Pipeline (wird waehrend jedes Laufs angelegt)
+.pipeline.lock
+
+# Alte Secret-Staende (.env-Backups vom 29.08.2026).
+# Niemals ins Repository - enthalten Schluesselwerte.
+archiv/secrets_*/
+
+# Laufzeitdaten des Betriebs (2026-09-27): entstehen bei jedem
+# Scheduler-Lauf und sind kein Quellcode.
+tagesverlauf.json
+audit/
+
+# Log-Rotation (2026-09-28): rotierte Logdateien und ihre Archive
+# sind Betriebsdaten, kein Quellcode. Die .log.1 wird von logrotate
+# beim naechsten Durchlauf ohnehin ersetzt.
+*.log.[0-9]
+*.log.[0-9].gz
+
+# Jev-Messungen und Testprotokolle (2026-09-29)
+logs/jev_*.json
+*.bak-jevgate-*
+
+# Screener 2026-09-29: Laufzeitdaten, keine Produktdateien.
+# Die Kandidatendatei ist ein Ergebnis, kein Quelltext - sie wird
+# woechentlich neu erzeugt und waechst sonst ohne Nutzen im Repo.
+.beta_cache.json
+screener_kandidaten.json
+screener_verlauf.json
+archiv/
+
+# ETF-Screener: wöchentlich neu erzeugte Betriebsdaten,
+# keine Quellen. Der Code steht im Repo, die Ausgabe nicht.
+screener_etf_beta.json
+.beta_etf_cache.json
+
+# Testdepots: werden bei jedem depot10-Lauf neu erzeugt.
+# Die seq im Dateinamen wuerde hochzaehlen.
+etf_*_01_paper.json
+
+# Rücksicherungen aus Reparaturläufen (02.10.2026)
+*.bak_deckel
+*.bak_deckel2
+*.bak_score
+*.bak_dt
+
+# ── Zugangsdaten / Sitzungen (nie ins Repo) ──
+proxy_token
+mt_cj.txt
+*cookie*.txt
+
+# ── Handarbeits-Backups und rotierte Logs ──
+*.bak_*
+*.log.*.gz
+*.log.[0-9]*
+
+# Scheduler: Kalenderwoche des letzten Wochenberichts
+.wochenbericht_stand.json
+
+# Earnings-Termine (earnings.py), 24 h Cache
+.earnings_cache.json
+
+# KI-Aufrufprotokoll (ki_provider.py), max ~2 MB
+ki_aufrufe.jsonl
+
+# ── 01.11.2026: Geheimnisse (waren versioniert, solange das Repo oeffentlich war) ──
+.session_secret
+.csrf_secret
+.watchdog_ntfy_topic
+wol-verify-config.json
+
+# ── 01.11.2026: Laufzeitdaten, die sich bei jedem Lauf aendern ──
+# (deploy.sh sichert Dateien, die Git verlassen, und legt sie wieder hin)
+.beta_stock_cache.json
+.spec_scan_cache.json
+.ticker_names.json
+.watchdog_state.json
+.last_fullscan
+_screen_cache.json
+fundamentals_cache.json
+ki_regeln.json
+learned_rules.json
+pending_rules.json
+konfidenz_stats.json
+regel_history.json
+security_audit.jsonl
+suspend_flag.json
+screener_aktien_beta.json
+reflexion_summary_*.md
+audit/
+
+# Handbuch-PDF wird erzeugt (tools/handbuch_pdf.py, deploy.sh, GitHub-Action)
+docs/handbuch/*.pdf
+
+# 01.11.2026: lokale Zusatz-Konfiguration (Hostnamen, Taildrop-Ziel)
+.trusted_hosts
+.watchdog_ts_target

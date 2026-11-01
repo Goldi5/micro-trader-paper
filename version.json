@@ -1,0 +1,36 @@
+{
+  "version": "2.60.0",
+  "build": "2026-11-01",
+  "released_at": "2026-11-01",
+  "codename": "Review & Ausbau: Handelsfehler behoben, Handelskosten, Stop-Loss/Trailing, Earnings-Sperre, Benchmark, Handbuch",
+  "changes": [
+    {
+      "version": "2.60.0",
+      "date": "2026-11-01",
+      "phase": "Review/Ausbau",
+      "title": "Code-Review, Ausbau, Aufraeumen",
+      "changes": [
+        "v2.59: KI-Aktionen nicht mehr doppelt ausgefuehrt; Positionen nicht mehr 15 % zu klein; KI-Kontextblock wieder im Prompt; Kursausfall sperrt keine Depots mehr; Buchhaltungsfehler behoben; Tests isoliert; deploy.sh",
+        "v2.60: Handelskosten (Gebuehr + Slippage), Stop-Loss/Take-Profit fuer Aktien-Depots + Trailing-Stop, Earnings-Sperre, Benchmark SPY und KI-Kennzahlen im Tagesbericht, ntfy-Alarme",
+        "Aufraeumen: Geheimnisse/Laufzeitdaten aus Git, Tests nach tests/, README, Handbuch-PDF, Lizenzhinweise"
+      ]
+    },
+    {
+      "version": "2.51.0",
+      "date": "2026-08-10",
+      "phase": "KI-Fix",
+      "title": "KI-Provider-Pool repariert - Trading wieder fundiert",
+      "changes": [
+        "PROBLEM: KI-Entscheidungen im Trader fielen auf Sicherheits-Fallback 'halten' (10/20 Spec ohne fundierte KI). Ursache: alle Free-Tier-Provider im ki_provider-Pool tot/kaputt.",
+        "ROOT-CAUSE 1: hy3/step (Reasoning-Modelle) lieferten leeres content bei max_tokens<2048 -> finish_reason='length'. _ki_call hebt max_tokens fuer hy3/step jetzt automatisch auf min. 2048.",
+        "ROOT-CAUSE 2: OpenRouter nutzte nemotron-3-ultra-550b-a55b:free (78s Antwortzeit -> Timeout im Trader). Umgestellt auf nvidia/nemotron-3-nano-30b-a3b:free (~1-3s).",
+        "ROOT-CAUSE 3: zen/deepseek (deepseek-v4-flash-free) -> 429 FreeUsageLimitError (Quota leer). Zen auf ling-3.0-flash-free umgestellt (funktioniert ~7s). laguna-s-2.1:free bei diesem Zen-Account: 401 ModelError (nicht autorisiert).",
+        "ROOT-CAUSE 4: ki_cooldown.json sperrte alle Provider dauerhaft (Circuit-Breaker). Geloescht -> Provider wieder testbar.",
+        "OpenRouter-Header (HTTP-Referer/X-Title) in get_client ergaenzt (sonst leere Antworten).",
+        "Provider-Reihenfolge Cron-Pool: openrouter (Primary) -> nous-hy3 -> nous-step -> zen(ling) -> zen-nemotron.",
+        "VERIFIKATION (ad-hoc, 8/8 PASS): openrouter 3.8s OK, nous-step 4.0s OK, nous-hy3 8.6s OK, zen(ling) 1.3s OK; hy3/step max_tokens>=2048-Lift aktiv; OR-Header gesetzt.",
+        "ERGEBNIS: Live-call_ki liefert in 2.4s fundierte Antwort (openrouter). Letzter KI-Run 21:16, 20/20 Spec mit Aktion, nur 4 Fallback (vorher 10)."
+      ]
+    }
+  ]
+}

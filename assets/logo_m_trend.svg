@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Micro-Trader Logo Motiv 1: "m" mit Trend-Linie -->
+  <rect width="120" height="120" rx="24" fill="#FFFFFF"/>
+  <g fill="none" stroke="#0A84FF" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <!-- m-Grundform -->
+    <path d="M28 84 V52 a12 12 0 0 1 24 0 V84"/>
+    <path d="M52 84 V52 a12 12 0 0 1 24 0"/>
+    <!-- rechte Hälfte wird zum Aufwärtstrend -->
+    <path d="M76 84 L90 60 L100 44" stroke="#30D158" stroke-width="8"/>
+  </g>
+  <!-- Punkt am Trend-Ende -->
+  <circle cx="100" cy="44" r="6" fill="#30D158"/>
+</svg>

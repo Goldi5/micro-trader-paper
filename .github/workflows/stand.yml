@@ -1,0 +1,42 @@
+name: README-Stand
+
+# Aktualisiert den Abschnitt "Letzter Stand" in der README nach jedem Push
+# auf main (Version, Datum, letzte Aenderungen).
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: readme-stand
+  cancel-in-progress: true
+
+jobs:
+  stand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 50
+
+      - name: Tags holen
+        run: git fetch --tags --force
+
+      - name: Stand schreiben
+        run: python3 tools/stand_aktualisieren.py
+
+      - name: Commit, falls geaendert
+        run: |
+          if git diff --quiet README.md; then
+            echo "README unveraendert"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Stand: README aktualisiert [skip ci]"
+          git push

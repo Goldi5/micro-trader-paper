@@ -1,0 +1,25 @@
+{
+  "name": "US_Test_Shadow",
+  "beschreibung": "US-Markt, Paper-Trading, Shadow-Lernmodus (kein Live-Eingriff)",
+  "märkte": [
+    "US"
+  ],
+  "depotarten": [
+    "aktien",
+    "etf",
+    "spec"
+  ],
+  "risk_model": "RISK_STUFEN",
+  "news_sources": [
+    "yfinance_news"
+  ],
+  "data_sources": [
+    "yfinance"
+  ],
+  "base_currency": "USD",
+  "handelszeiten": "boersen.py",
+  "regelstand_ref": "latest",
+  "modus": "paper",
+  "erstellt": "2026-08-05",
+  "version": "2.16.3"
+}

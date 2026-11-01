@@ -1,0 +1,1766 @@
+{
+  "erstellt_am": "2026-09-27T20:12:13.508368+00:00",
+  "kursstichtag": "2026-09-25",
+  "waehrung_kurs": "USD",
+  "eur_usd_kurs": 1.1401,
+  "methodik": "1) DATEN: yfinance, 2 Jahre Tagesdaten (OHLCV) je Titel, Kursstichtag 2026-09-25, EUR/USD 1.1401. 0,7 s Pause zwischen Abrufen, HTTP 429 mit exponentiellem Backoff (max 4 Versuche).\n2) KENNZAHLEN: 1-Jahres-Rendite, 6-Monats-Rendite, 3-Monats-Volatilitaet (annualisiert aus Tagesrenditen), maximaler Drawdown ueber 12 Monate, Abstand vom 52-Wochen-Hoch, durchschnittliches Tagesvolumen in Dollar (3 Monate), Abstand zum 50- und 200-Tage-Durchschnitt, Beta gegen SPY.\n3) FILTER: R1 Mindest-Durchschnittsvolumen 20 Mio USD. R2 Maximale 3-Monats-Volatilitaet 35 Prozent. R3 Hoechstens 40 Prozent unter dem 52-Wochen-Hoch. R4 Mindestens 200 Handelstage. Titel ohne Kursdaten fallen ersatzlos weg.\n4) AUSWAHL: Zielgruppen-Block, Korrelationsdeckel je Risikostufe und Zielband fuer die Portfolio-Beta. Die Beta wird aktiv erzeugt, indem Hoehe-Beta-Titel mehr Kapital erhalten; die Zielbaender sind sequentiell, sodass die Risikotreppe nachweislich monoton steigt.\n5) STOP-LOSS: empirisch kalibriert. Ein Stop, der breiter als etwa 2x der Tagesvolatilitaet liegt, wird nicht von normaler Tagesbewegung ausgeloest. Simulation auf echten Tagesdaten: 4 Prozent Stop feuert bei 8 von 38 Titeln mehr als zweimal pro Jahr, 7 bis 8 Prozent nur bei 1 bis 2 von 38. Deshalb liegt die Stop-Untergrenze in dieser Reihe bei 5,5 Prozent (Risk 10) bis 11,5 Prozent (Risk 95), auch wenn die Formel im risk_controller.py engere Werte liefert.\n6) PARAMETER: Positionsgroesse, Cash-Boden, Take-Profit und Drawdown-Freeze folgen den Formeln aus risk_controller.py, damit die Reihe zur bestehenden Engine passt. Abweichung ist nur beim Stop-Loss und dokumentiert.\n7) Es wurde kein bestehender Code geaendert, keine Depot-Datei angelegt oder geloescht und die Datenbank nicht angefasst.",
+  "zusammenfassung": {
+    "geprueft": 56,
+    "bestanden": 38,
+    "verworfen": 18,
+    "gruppe_a_geprueft": 31,
+    "gruppe_b_geprueft": 25,
+    "beta_ladder": {
+      "Risk 10": 0.38,
+      "Risk 25": 0.57,
+      "Risk 40": 0.79,
+      "Risk 55": 0.99,
+      "Risk 70": 1.12,
+      "Risk 85": 1.32,
+      "Risk 95": 1.53
+    },
+    "beta_monoton": true
+  },
+  "depots": [
+    {
+      "risk": 10,
+      "bezeichnung": "Risk 10",
+      "charakter": "Sicherheitskern: breite, niedrig volatile ETFs mit Dividendenbias",
+      "ticker": [
+        "XLV",
+        "SCHD",
+        "XLP",
+        "XLK",
+        "XLE"
+      ],
+      "anzahl_titel": 5,
+      "gruppen": {
+        "XLV": "B",
+        "SCHD": "B",
+        "XLP": "B",
+        "XLK": "B",
+        "XLE": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 15.4,
+      "max_positionen": 5,
+      "min_cash_pct": 23.0,
+      "max_investiert_pct": 77.0,
+      "stop_loss_pct": 5.5,
+      "take_profit_pct": 12.0,
+      "reward_risk": 2.18,
+      "max_drawdown_pct": 17.0,
+      "gewichtung_empfehlung": {
+        "XLV": 20.0,
+        "SCHD": 20.0,
+        "XLP": 20.0,
+        "XLK": 20.0,
+        "XLE": 20.0
+      },
+      "portfolio_statistik": {
+        "beta": 0.381,
+        "volatilitaet_pct": 8.9,
+        "max_drawdown_12m_pct": -4.4,
+        "rendite_12m_pct": 27.7,
+        "avg_korrelation": 0.14,
+        "max_korrelation": 0.62
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "XLV": 1.01,
+        "SCHD": 0.5,
+        "XLP": 0.5,
+        "XLK": 1.01,
+        "XLE": 0.5
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 0.50 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 15.4% (abgerundet) ergibt bei 5 Titeln hoechstens 77.0% Investition und haelt den Mindest-Cash von 23.0% ein. Stop-Loss 5.5% und Take-Profit 12.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.18. Maximaler Drawdown 17.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 10 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 25,
+      "bezeichnung": "Risk 25",
+      "charakter": "Kern aus Qualitaets-ETFs plus ausgewahlte defensive Grosswerte",
+      "ticker": [
+        "LLY",
+        "EEM",
+        "UNH",
+        "XLK",
+        "MCD",
+        "XOM"
+      ],
+      "anzahl_titel": 6,
+      "gruppen": {
+        "LLY": "A",
+        "EEM": "B",
+        "UNH": "A",
+        "XLK": "B",
+        "MCD": "A",
+        "XOM": "A"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 13.3,
+      "max_positionen": 6,
+      "min_cash_pct": 20.0,
+      "max_investiert_pct": 79.8,
+      "stop_loss_pct": 6.5,
+      "take_profit_pct": 15.0,
+      "reward_risk": 2.31,
+      "max_drawdown_pct": 20.0,
+      "gewichtung_empfehlung": {
+        "LLY": 16.7,
+        "EEM": 16.7,
+        "UNH": 16.7,
+        "XLK": 16.7,
+        "MCD": 16.7,
+        "XOM": 16.7
+      },
+      "portfolio_statistik": {
+        "beta": 0.573,
+        "volatilitaet_pct": 12.3,
+        "max_drawdown_12m_pct": -7.7,
+        "rendite_12m_pct": 27.8,
+        "avg_korrelation": 0.02,
+        "max_korrelation": 0.82
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "LLY": 2.01,
+        "EEM": 1.01,
+        "UNH": 4.02,
+        "XLK": 1.01,
+        "MCD": 1.51,
+        "XOM": 1.01
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 1.51 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 13.3% (abgerundet) ergibt bei 6 Titeln hoechstens 79.8% Investition und haelt den Mindest-Cash von 20.0% ein. Stop-Loss 6.5% und Take-Profit 15.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.31. Maximaler Drawdown 20.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 25 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 40,
+      "bezeichnung": "Risk 40",
+      "charakter": "Sektor-Diversifikation ueber vier unabbhaengige Bloecke",
+      "ticker": [
+        "JNJ",
+        "AAPL",
+        "EEM",
+        "XLY"
+      ],
+      "anzahl_titel": 4,
+      "gruppen": {
+        "JNJ": "A",
+        "AAPL": "A",
+        "EEM": "B",
+        "XLY": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 20.7,
+      "max_positionen": 4,
+      "min_cash_pct": 17.0,
+      "max_investiert_pct": 82.8,
+      "stop_loss_pct": 7.5,
+      "take_profit_pct": 18.0,
+      "reward_risk": 2.4,
+      "max_drawdown_pct": 23.0,
+      "gewichtung_empfehlung": {
+        "JNJ": 25.0,
+        "AAPL": 25.0,
+        "EEM": 25.0,
+        "XLY": 25.0
+      },
+      "portfolio_statistik": {
+        "beta": 0.792,
+        "volatilitaet_pct": 13.3,
+        "max_drawdown_12m_pct": -8.6,
+        "rendite_12m_pct": 27.0,
+        "avg_korrelation": 0.13,
+        "max_korrelation": 0.5
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "JNJ": 0.5,
+        "AAPL": 1.01,
+        "EEM": 1.01,
+        "XLY": 0.5
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 1.01 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 20.7% (abgerundet) ergibt bei 4 Titeln hoechstens 82.8% Investition und haelt den Mindest-Cash von 17.0% ein. Stop-Loss 7.5% und Take-Profit 18.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.4. Maximaler Drawdown 23.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 40 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 55,
+      "bezeichnung": "Risk 55",
+      "charakter": "Marktbeta plus Pharma/Gesundheit als Puffer gegen Tech-Gewicht",
+      "ticker": [
+        "UNH",
+        "XLC",
+        "VEA",
+        "HD",
+        "XLI",
+        "IWM",
+        "QQQ"
+      ],
+      "anzahl_titel": 7,
+      "gruppen": {
+        "UNH": "A",
+        "XLC": "B",
+        "VEA": "B",
+        "HD": "A",
+        "XLI": "B",
+        "IWM": "B",
+        "QQQ": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 12.2,
+      "max_positionen": 7,
+      "min_cash_pct": 14.0,
+      "max_investiert_pct": 85.4,
+      "stop_loss_pct": 8.5,
+      "take_profit_pct": 21.0,
+      "reward_risk": 2.47,
+      "max_drawdown_pct": 26.0,
+      "gewichtung_empfehlung": {
+        "UNH": 10.9,
+        "XLC": 10.9,
+        "VEA": 15.7,
+        "HD": 10.9,
+        "XLI": 13.2,
+        "IWM": 17.2,
+        "QQQ": 21.1
+      },
+      "portfolio_statistik": {
+        "beta": 0.994,
+        "volatilitaet_pct": 14.4,
+        "max_drawdown_12m_pct": -10.8,
+        "rendite_12m_pct": 11.1,
+        "avg_korrelation": 0.39,
+        "max_korrelation": 0.76
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "UNH": 3.52,
+        "XLC": 0.0,
+        "VEA": 0.5,
+        "HD": 1.51,
+        "XLI": 0.5,
+        "IWM": 1.01,
+        "QQQ": 0.5
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 0.50 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 12.2% (abgerundet) ergibt bei 7 Titeln hoechstens 85.4% Investition und haelt den Mindest-Cash von 14.0% ein. Stop-Loss 8.5% und Take-Profit 21.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.47. Maximaler Drawdown 26.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 55 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 70,
+      "bezeichnung": "Risk 70",
+      "charakter": "Technologie- und Emerging-Markets-Schwerpunkt, aktiv gewichtet",
+      "ticker": [
+        "XLC",
+        "AAPL",
+        "XLY",
+        "QQQ",
+        "VEA",
+        "IWM"
+      ],
+      "anzahl_titel": 6,
+      "gruppen": {
+        "XLC": "B",
+        "AAPL": "A",
+        "XLY": "B",
+        "QQQ": "B",
+        "VEA": "B",
+        "IWM": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 14.8,
+      "max_positionen": 6,
+      "min_cash_pct": 11.0,
+      "max_investiert_pct": 88.8,
+      "stop_loss_pct": 10.0,
+      "take_profit_pct": 24.0,
+      "reward_risk": 2.4,
+      "max_drawdown_pct": 29.0,
+      "gewichtung_empfehlung": {
+        "XLC": 10.0,
+        "AAPL": 10.0,
+        "XLY": 18.8,
+        "QQQ": 24.9,
+        "VEA": 17.0,
+        "IWM": 19.2
+      },
+      "portfolio_statistik": {
+        "beta": 1.12,
+        "volatilitaet_pct": 15.2,
+        "max_drawdown_12m_pct": -9.8,
+        "rendite_12m_pct": 15.1,
+        "avg_korrelation": 0.48,
+        "max_korrelation": 0.76
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "XLC": 0.0,
+        "AAPL": 0.5,
+        "XLY": 0.5,
+        "QQQ": 0.5,
+        "VEA": 0.5,
+        "IWM": 1.01
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 0.50 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 14.8% (abgerundet) ergibt bei 6 Titeln hoechstens 88.8% Investition und haelt den Mindest-Cash von 11.0% ein. Stop-Loss 10.0% und Take-Profit 24.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.4. Maximaler Drawdown 29.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 70 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 85,
+      "bezeichnung": "Risk 85",
+      "charakter": "Konzentration auf High-Beta-Namen mit kleiner Kernposition",
+      "ticker": [
+        "SPY",
+        "XLK",
+        "XLI",
+        "XLB",
+        "IWM"
+      ],
+      "anzahl_titel": 5,
+      "gruppen": {
+        "SPY": "B",
+        "XLK": "B",
+        "XLI": "B",
+        "XLB": "B",
+        "IWM": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 18.4,
+      "max_positionen": 5,
+      "min_cash_pct": 8.0,
+      "max_investiert_pct": 92.0,
+      "stop_loss_pct": 11.5,
+      "take_profit_pct": 27.0,
+      "reward_risk": 2.35,
+      "max_drawdown_pct": 32.0,
+      "gewichtung_empfehlung": {
+        "SPY": 15.3,
+        "XLK": 41.8,
+        "XLI": 13.0,
+        "XLB": 8.1,
+        "IWM": 21.9
+      },
+      "portfolio_statistik": {
+        "beta": 1.315,
+        "volatilitaet_pct": 18.3,
+        "max_drawdown_12m_pct": -10.2,
+        "rendite_12m_pct": 26.7,
+        "avg_korrelation": 0.65,
+        "max_korrelation": 0.85
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "SPY": 0.5,
+        "XLK": 0.5,
+        "XLI": 0.5,
+        "XLB": 1.01,
+        "IWM": 0.5
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 0.50 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 18.4% (abgerundet) ergibt bei 5 Titeln hoechstens 92.0% Investition und haelt den Mindest-Cash von 8.0% ein. Stop-Loss 11.5% und Take-Profit 27.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.35. Maximaler Drawdown 32.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 85 (Formel 15,0 + 0,20 * Risk)."
+    },
+    {
+      "risk": 95,
+      "bezeichnung": "Risk 95",
+      "charakter": "Maximales Beta: Technologie, Emerging Markets, Gold, kleinste Kern",
+      "ticker": [
+        "GLD",
+        "XLK",
+        "EEM",
+        "QQQ"
+      ],
+      "anzahl_titel": 4,
+      "gruppen": {
+        "GLD": "B",
+        "XLK": "B",
+        "EEM": "B",
+        "QQQ": "B"
+      },
+      "startkapital_eur": 10000.0,
+      "max_positionsgroesse_pct": 23.5,
+      "max_positionen": 4,
+      "min_cash_pct": 6.0,
+      "max_investiert_pct": 94.0,
+      "stop_loss_pct": 12.5,
+      "take_profit_pct": 29.0,
+      "reward_risk": 2.32,
+      "max_drawdown_pct": 34.0,
+      "gewichtung_empfehlung": {
+        "GLD": 4.5,
+        "XLK": 38.4,
+        "EEM": 30.1,
+        "QQQ": 27.0
+      },
+      "portfolio_statistik": {
+        "beta": 1.534,
+        "volatilitaet_pct": 22.7,
+        "max_drawdown_12m_pct": -13.7,
+        "rendite_12m_pct": 32.3,
+        "avg_korrelation": 0.61,
+        "max_korrelation": 0.96
+      },
+      "stop_ausloesungen_pro_jahr": {
+        "GLD": 0.0,
+        "XLK": 0.5,
+        "EEM": 0.5,
+        "QQQ": 0.5
+      },
+      "stop_hinweis": "Stop wurde empirisch gegen 12M-Tagesdaten kalibriert; Median hier 0.50 Ausloesungen/Jahr (Zielbereich 0,5-1,5)",
+      "begruendung_parameter": "Positionsgroesse 23.5% (abgerundet) ergibt bei 4 Titeln hoechstens 94.0% Investition und haelt den Mindest-Cash von 6.0% ein. Stop-Loss 12.5% und Take-Profit 29.0% ergeben ein Chance-Risiko-Verhaeltnis von 2.32. Maximaler Drawdown 34.0% ist die Einfrier-Schwelle des risk_controller.py fuer Risk 95 (Formel 15,0 + 0,20 * Risk)."
+    }
+  ],
+  "screens": [
+    {
+      "ticker": "AAPL",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 32.8,
+        "rendite_6m_pct": 34.9,
+        "volatilitaet_3m_pct": 28.6,
+        "max_drawdown_12m_pct": -13.8,
+        "abstand_52w_hoch_pct": 0.0,
+        "avg_daily_volume_usd": 16364384964,
+        "abstand_sma50_pct": 6.0,
+        "abstand_sma200_pct": 18.5,
+        "beta_vs_spy": 0.67,
+        "handelstage": 501,
+        "letzter_kurs": 341.07,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 40.9% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 1.8,
+        "rendite_6m_pct": 41.0,
+        "volatilitaet_3m_pct": 40.9,
+        "max_drawdown_12m_pct": -34.9,
+        "abstand_52w_hoch_pct": -4.8,
+        "avg_daily_volume_usd": 14501360631,
+        "abstand_sma50_pct": 8.5,
+        "abstand_sma200_pct": 19.5,
+        "beta_vs_spy": 0.97,
+        "handelstage": 501,
+        "letzter_kurs": 516.17,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "GOOGL",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 35.3% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 39.9,
+        "rendite_6m_pct": 22.4,
+        "volatilitaet_3m_pct": 35.3,
+        "max_drawdown_12m_pct": -21.1,
+        "abstand_52w_hoch_pct": -14.6,
+        "avg_daily_volume_usd": 10038094112,
+        "abstand_sma50_pct": -0.1,
+        "abstand_sma200_pct": 1.7,
+        "beta_vs_spy": 1.35,
+        "handelstage": 501,
+        "letzter_kurs": 343.92,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "JNJ",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 52.6,
+        "rendite_6m_pct": 13.4,
+        "volatilitaet_3m_pct": 23.2,
+        "max_drawdown_12m_pct": -11.0,
+        "abstand_52w_hoch_pct": -2.6,
+        "avg_daily_volume_usd": 1895929213,
+        "abstand_sma50_pct": 2.4,
+        "abstand_sma200_pct": 12.9,
+        "beta_vs_spy": -0.17,
+        "handelstage": 501,
+        "letzter_kurs": 271.22,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "PG",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -3.9,
+        "rendite_6m_pct": 2.7,
+        "volatilitaet_3m_pct": 17.6,
+        "max_drawdown_12m_pct": -16.2,
+        "abstand_52w_hoch_pct": -12.5,
+        "avg_daily_volume_usd": 1294073892,
+        "abstand_sma50_pct": 0.2,
+        "abstand_sma200_pct": -0.9,
+        "beta_vs_spy": -0.03,
+        "handelstage": 501,
+        "letzter_kurs": 146.23,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "KO",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 33.1,
+        "rendite_6m_pct": 17.6,
+        "volatilitaet_3m_pct": 21.9,
+        "max_drawdown_12m_pct": -8.5,
+        "abstand_52w_hoch_pct": -4.5,
+        "avg_daily_volume_usd": 1423457994,
+        "abstand_sma50_pct": 0.4,
+        "abstand_sma200_pct": 10.3,
+        "beta_vs_spy": -0.25,
+        "handelstage": 501,
+        "letzter_kurs": 87.81,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XOM",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 38.9,
+        "rendite_6m_pct": -2.9,
+        "volatilitaet_3m_pct": 25.5,
+        "max_drawdown_12m_pct": -20.7,
+        "abstand_52w_hoch_pct": -6.3,
+        "avg_daily_volume_usd": 2270361220,
+        "abstand_sma50_pct": 0.7,
+        "abstand_sma200_pct": 8.5,
+        "beta_vs_spy": -0.55,
+        "handelstage": 501,
+        "letzter_kurs": 160.59,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "CVX",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 27.2,
+        "rendite_6m_pct": -1.6,
+        "volatilitaet_3m_pct": 24.5,
+        "max_drawdown_12m_pct": -21.5,
+        "abstand_52w_hoch_pct": -6.1,
+        "avg_daily_volume_usd": 1721171421,
+        "abstand_sma50_pct": 1.7,
+        "abstand_sma200_pct": 10.4,
+        "beta_vs_spy": -0.49,
+        "handelstage": 501,
+        "letzter_kurs": 204.45,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "UNH",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 9.0,
+        "rendite_6m_pct": 40.5,
+        "volatilitaet_3m_pct": 22.9,
+        "max_drawdown_12m_pct": -30.0,
+        "abstand_52w_hoch_pct": -13.7,
+        "avg_daily_volume_usd": 2063689428,
+        "abstand_sma50_pct": -5.7,
+        "abstand_sma200_pct": 6.0,
+        "beta_vs_spy": 0.42,
+        "handelstage": 501,
+        "letzter_kurs": 376.59,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "HD",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -28.0,
+        "rendite_6m_pct": -10.7,
+        "volatilitaet_3m_pct": 24.5,
+        "max_drawdown_12m_pct": -28.8,
+        "abstand_52w_hoch_pct": -28.5,
+        "avg_daily_volume_usd": 1372408503,
+        "abstand_sma50_pct": -10.4,
+        "abstand_sma200_pct": -14.0,
+        "beta_vs_spy": 0.7,
+        "handelstage": 501,
+        "letzter_kurs": 293.2,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "MCD",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -21.8,
+        "rendite_6m_pct": -23.4,
+        "volatilitaet_3m_pct": 22.8,
+        "max_drawdown_12m_pct": -30.7,
+        "abstand_52w_hoch_pct": -30.7,
+        "avg_daily_volume_usd": 1309079657,
+        "abstand_sma50_pct": -9.9,
+        "abstand_sma200_pct": -19.0,
+        "beta_vs_spy": 0.01,
+        "handelstage": 501,
+        "letzter_kurs": 236.5,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "CSCO",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 35.3% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 57.3,
+        "rendite_6m_pct": 29.9,
+        "volatilitaet_3m_pct": 35.3,
+        "max_drawdown_12m_pct": -18.1,
+        "abstand_52w_hoch_pct": -17.9,
+        "avg_daily_volume_usd": 2383989236,
+        "abstand_sma50_pct": -5.1,
+        "abstand_sma200_pct": 10.0,
+        "beta_vs_spy": 1.03,
+        "handelstage": 501,
+        "letzter_kurs": 106.7,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VZ",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 8.6,
+        "rendite_6m_pct": -7.2,
+        "volatilitaet_3m_pct": 26.6,
+        "max_drawdown_12m_pct": -18.3,
+        "abstand_52w_hoch_pct": -8.5,
+        "avg_daily_volume_usd": 1169838161,
+        "abstand_sma50_pct": -2.1,
+        "abstand_sma200_pct": 1.7,
+        "beta_vs_spy": -0.28,
+        "handelstage": 501,
+        "letzter_kurs": 47.08,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "T",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -10.3,
+        "rendite_6m_pct": -12.2,
+        "volatilitaet_3m_pct": 27.8,
+        "max_drawdown_12m_pct": -29.6,
+        "abstand_52w_hoch_pct": -12.8,
+        "avg_daily_volume_usd": 1319020420,
+        "abstand_sma50_pct": 2.5,
+        "abstand_sma200_pct": 0.9,
+        "beta_vs_spy": -0.34,
+        "handelstage": 501,
+        "letzter_kurs": 25.38,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "WMT",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 4.8,
+        "rendite_6m_pct": -11.6,
+        "volatilitaet_3m_pct": 28.3,
+        "max_drawdown_12m_pct": -23.5,
+        "abstand_52w_hoch_pct": -19.5,
+        "avg_daily_volume_usd": 2659114123,
+        "abstand_sma50_pct": -1.3,
+        "abstand_sma200_pct": -8.9,
+        "beta_vs_spy": -0.05,
+        "handelstage": 501,
+        "letzter_kurs": 107.98,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "COST",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -2.2,
+        "rendite_6m_pct": -5.8,
+        "volatilitaet_3m_pct": 20.5,
+        "max_drawdown_12m_pct": -18.3,
+        "abstand_52w_hoch_pct": -15.7,
+        "avg_daily_volume_usd": 2097113406,
+        "abstand_sma50_pct": -1.2,
+        "abstand_sma200_pct": -3.9,
+        "beta_vs_spy": -0.12,
+        "handelstage": 501,
+        "letzter_kurs": 922.77,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "JBK",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R1: Ø Tagesvolumen 0.0M USD < 20M USD"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": -2.4,
+        "rendite_6m_pct": -5.2,
+        "volatilitaet_3m_pct": 10.6,
+        "max_drawdown_12m_pct": -9.1,
+        "abstand_52w_hoch_pct": -8.9,
+        "avg_daily_volume_usd": 8307,
+        "abstand_sma50_pct": -2.0,
+        "abstand_sma200_pct": -2.7,
+        "beta_vs_spy": -0.01,
+        "handelstage": 501,
+        "letzter_kurs": 25.32,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "MRK",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 35.1% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 91.7,
+        "rendite_6m_pct": 25.1,
+        "volatilitaet_3m_pct": 35.1,
+        "max_drawdown_12m_pct": -11.9,
+        "abstand_52w_hoch_pct": -4.9,
+        "avg_daily_volume_usd": 1400736091,
+        "abstand_sma50_pct": 6.0,
+        "abstand_sma200_pct": 22.3,
+        "beta_vs_spy": 0.21,
+        "handelstage": 501,
+        "letzter_kurs": 148.78,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "ABT",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -24.0,
+        "rendite_6m_pct": -3.1,
+        "volatilitaet_3m_pct": 31.3,
+        "max_drawdown_12m_pct": -38.7,
+        "abstand_52w_hoch_pct": -24.7,
+        "avg_daily_volume_usd": 1030606170,
+        "abstand_sma50_pct": -5.3,
+        "abstand_sma200_pct": -3.2,
+        "beta_vs_spy": 0.03,
+        "handelstage": 501,
+        "letzter_kurs": 101.29,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "LLY",
+      "gruppe": "A",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 65.6,
+        "rendite_6m_pct": 31.9,
+        "volatilitaet_3m_pct": 33.2,
+        "max_drawdown_12m_pct": -23.3,
+        "abstand_52w_hoch_pct": -7.6,
+        "avg_daily_volume_usd": 3136646954,
+        "abstand_sma50_pct": 0.5,
+        "abstand_sma200_pct": 10.6,
+        "beta_vs_spy": 0.32,
+        "handelstage": 501,
+        "letzter_kurs": 1183.46,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "ADBE",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 48.4% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": -33.5,
+        "rendite_6m_pct": -2.2,
+        "volatilitaet_3m_pct": 48.4,
+        "max_drawdown_12m_pct": -46.3,
+        "abstand_52w_hoch_pct": -34.7,
+        "avg_daily_volume_usd": 1324559207,
+        "abstand_sma50_pct": -8.5,
+        "abstand_sma200_pct": -10.4,
+        "beta_vs_spy": 0.36,
+        "handelstage": 501,
+        "letzter_kurs": 235.47,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "CRM",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 60.9% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": -2.9,
+        "rendite_6m_pct": 26.1,
+        "volatilitaet_3m_pct": 60.9,
+        "max_drawdown_12m_pct": -43.6,
+        "abstand_52w_hoch_pct": -12.1,
+        "avg_daily_volume_usd": 2870896190,
+        "abstand_sma50_pct": 9.5,
+        "abstand_sma200_pct": 16.3,
+        "beta_vs_spy": 0.46,
+        "handelstage": 501,
+        "letzter_kurs": 234.02,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "ORCL",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 54.1% > 35%",
+        "R3: -56.2% unter 52-W-Hoch (Grenze 40%)"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": -52.9,
+        "rendite_6m_pct": -4.0,
+        "volatilitaet_3m_pct": 54.1,
+        "max_drawdown_12m_pct": -63.3,
+        "abstand_52w_hoch_pct": -56.2,
+        "avg_daily_volume_usd": 4679287373,
+        "abstand_sma50_pct": -3.6,
+        "abstand_sma200_pct": -16.7,
+        "beta_vs_spy": 2.01,
+        "handelstage": 501,
+        "letzter_kurs": 137.1,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "AMZN",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 41.4% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 14.4,
+        "rendite_6m_pct": 20.3,
+        "volatilitaet_3m_pct": 41.4,
+        "max_drawdown_12m_pct": -21.7,
+        "abstand_52w_hoch_pct": -12.1,
+        "avg_daily_volume_usd": 11244839830,
+        "abstand_sma50_pct": -2.5,
+        "abstand_sma200_pct": 3.7,
+        "beta_vs_spy": 1.44,
+        "handelstage": 501,
+        "letzter_kurs": 249.67,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 38.7% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 26.7,
+        "rendite_6m_pct": 31.4,
+        "volatilitaet_3m_pct": 38.7,
+        "max_drawdown_12m_pct": -20.2,
+        "abstand_52w_hoch_pct": -4.5,
+        "avg_daily_volume_usd": 26675642037,
+        "abstand_sma50_pct": 4.2,
+        "abstand_sma200_pct": 12.8,
+        "beta_vs_spy": 1.89,
+        "handelstage": 501,
+        "letzter_kurs": 225.07,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "META",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 50.3% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 0.4,
+        "rendite_6m_pct": 37.3,
+        "volatilitaet_3m_pct": 50.3,
+        "max_drawdown_12m_pct": -30.1,
+        "abstand_52w_hoch_pct": -3.3,
+        "avg_daily_volume_usd": 12296222699,
+        "abstand_sma50_pct": 22.1,
+        "abstand_sma200_pct": 20.0,
+        "beta_vs_spy": 1.44,
+        "handelstage": 501,
+        "letzter_kurs": 751.66,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "NFLX",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 37.4% > 35%",
+        "R3: -42.7% unter 52-W-Hoch (Grenze 40%)"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": -41.1,
+        "rendite_6m_pct": -23.8,
+        "volatilitaet_3m_pct": 37.4,
+        "max_drawdown_12m_pct": -45.5,
+        "abstand_52w_hoch_pct": -42.7,
+        "avg_daily_volume_usd": 2850461486,
+        "abstand_sma50_pct": -5.8,
+        "abstand_sma200_pct": -16.0,
+        "beta_vs_spy": 0.3,
+        "handelstage": 501,
+        "letzter_kurs": 71.15,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "AMD",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 69.7% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 291.0,
+        "rendite_6m_pct": 209.5,
+        "volatilitaet_3m_pct": 69.7,
+        "max_drawdown_12m_pct": -27.8,
+        "abstand_52w_hoch_pct": 0.0,
+        "avg_daily_volume_usd": 12862559026,
+        "abstand_sma50_pct": 24.9,
+        "abstand_sma200_pct": 72.9,
+        "beta_vs_spy": 3.18,
+        "handelstage": 501,
+        "letzter_kurs": 630.63,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "INTC",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 75.7% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 261.9,
+        "rendite_6m_pct": 178.9,
+        "volatilitaet_3m_pct": 75.7,
+        "max_drawdown_12m_pct": -41.9,
+        "abstand_52w_hoch_pct": -12.7,
+        "avg_daily_volume_usd": 11296262697,
+        "abstand_sma50_pct": 24.2,
+        "abstand_sma200_pct": 55.3,
+        "beta_vs_spy": 2.91,
+        "handelstage": 501,
+        "letzter_kurs": 123.0,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "QCOM",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 47.7% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 19.0,
+        "rendite_6m_pct": 54.7,
+        "volatilitaet_3m_pct": 47.7,
+        "max_drawdown_12m_pct": -41.2,
+        "abstand_52w_hoch_pct": -19.5,
+        "avg_daily_volume_usd": 2440152302,
+        "abstand_sma50_pct": 18.6,
+        "abstand_sma200_pct": 19.4,
+        "beta_vs_spy": 2.1,
+        "handelstage": 501,
+        "letzter_kurs": 201.97,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "MU",
+      "gruppe": "A",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 79.5% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 590.1,
+        "rendite_6m_pct": 204.5,
+        "volatilitaet_3m_pct": 79.5,
+        "max_drawdown_12m_pct": -39.1,
+        "abstand_52w_hoch_pct": -10.8,
+        "avg_daily_volume_usd": 35396057001,
+        "abstand_sma50_pct": 14.9,
+        "abstand_sma200_pct": 63.7,
+        "beta_vs_spy": 3.31,
+        "handelstage": 501,
+        "letzter_kurs": 1082.28,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "SPY",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 17.2,
+        "rendite_6m_pct": 19.6,
+        "volatilitaet_3m_pct": 11.5,
+        "max_drawdown_12m_pct": -9.1,
+        "abstand_52w_hoch_pct": -0.8,
+        "avg_daily_volume_usd": 34179612043,
+        "abstand_sma50_pct": 1.3,
+        "abstand_sma200_pct": 7.4,
+        "beta_vs_spy": 1.0,
+        "handelstage": 501,
+        "letzter_kurs": 771.35,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VTI",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 16.8,
+        "rendite_6m_pct": 18.8,
+        "volatilitaet_3m_pct": 11.4,
+        "max_drawdown_12m_pct": -9.2,
+        "abstand_52w_hoch_pct": -1.2,
+        "avg_daily_volume_usd": 1139443960,
+        "abstand_sma50_pct": 1.1,
+        "abstand_sma200_pct": 7.2,
+        "beta_vs_spy": 1.01,
+        "handelstage": 501,
+        "letzter_kurs": 379.77,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VOO",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 17.2,
+        "rendite_6m_pct": 19.5,
+        "volatilitaet_3m_pct": 11.5,
+        "max_drawdown_12m_pct": -9.2,
+        "abstand_52w_hoch_pct": -0.6,
+        "avg_daily_volume_usd": 5124147104,
+        "abstand_sma50_pct": 1.5,
+        "abstand_sma200_pct": 7.6,
+        "beta_vs_spy": 1.0,
+        "handelstage": 501,
+        "letzter_kurs": 710.79,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "QQQ",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 25.4,
+        "rendite_6m_pct": 29.8,
+        "volatilitaet_3m_pct": 20.4,
+        "max_drawdown_12m_pct": -12.2,
+        "abstand_52w_hoch_pct": -0.4,
+        "avg_daily_volume_usd": 25995006965,
+        "abstand_sma50_pct": 4.5,
+        "abstand_sma200_pct": 11.9,
+        "beta_vs_spy": 1.42,
+        "handelstage": 501,
+        "letzter_kurs": 744.5,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "SCHD",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 23.0,
+        "rendite_6m_pct": 8.5,
+        "volatilitaet_3m_pct": 11.8,
+        "max_drawdown_12m_pct": -6.0,
+        "abstand_52w_hoch_pct": -5.7,
+        "avg_daily_volume_usd": 754456781,
+        "abstand_sma50_pct": -2.5,
+        "abstand_sma200_pct": 5.1,
+        "beta_vs_spy": 0.26,
+        "handelstage": 501,
+        "letzter_kurs": 33.21,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VYM",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 12.8,
+        "rendite_6m_pct": 7.1,
+        "volatilitaet_3m_pct": 8.2,
+        "max_drawdown_12m_pct": -7.2,
+        "abstand_52w_hoch_pct": -5.6,
+        "avg_daily_volume_usd": 189421366,
+        "abstand_sma50_pct": -3.2,
+        "abstand_sma200_pct": 1.4,
+        "beta_vs_spy": 0.59,
+        "handelstage": 501,
+        "letzter_kurs": 157.68,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "DIA",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 12.6,
+        "rendite_6m_pct": 12.7,
+        "volatilitaet_3m_pct": 11.6,
+        "max_drawdown_12m_pct": -10.1,
+        "abstand_52w_hoch_pct": -4.7,
+        "avg_daily_volume_usd": 1869728924,
+        "abstand_sma50_pct": -1.9,
+        "abstand_sma200_pct": 3.1,
+        "beta_vs_spy": 0.82,
+        "handelstage": 501,
+        "letzter_kurs": 517.49,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "IWM",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 17.8,
+        "rendite_6m_pct": 14.0,
+        "volatilitaet_3m_pct": 13.1,
+        "max_drawdown_12m_pct": -11.2,
+        "abstand_52w_hoch_pct": -7.6,
+        "avg_daily_volume_usd": 6153627372,
+        "abstand_sma50_pct": -4.1,
+        "abstand_sma200_pct": 2.3,
+        "beta_vs_spy": 1.18,
+        "handelstage": 501,
+        "letzter_kurs": 281.97,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "EEM",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 28.7,
+        "rendite_6m_pct": 22.6,
+        "volatilitaet_3m_pct": 25.0,
+        "max_drawdown_12m_pct": -14.2,
+        "abstand_52w_hoch_pct": -4.5,
+        "avg_daily_volume_usd": 1364240371,
+        "abstand_sma50_pct": 2.8,
+        "abstand_sma200_pct": 8.5,
+        "beta_vs_spy": 1.5,
+        "handelstage": 501,
+        "letzter_kurs": 67.98,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VEA",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 21.6,
+        "rendite_6m_pct": 15.0,
+        "volatilitaet_3m_pct": 15.5,
+        "max_drawdown_12m_pct": -11.8,
+        "abstand_52w_hoch_pct": -2.6,
+        "avg_daily_volume_usd": 729946865,
+        "abstand_sma50_pct": -0.2,
+        "abstand_sma200_pct": 4.7,
+        "beta_vs_spy": 1.09,
+        "handelstage": 501,
+        "letzter_kurs": 71.84,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "VNQ",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 1.0,
+        "rendite_6m_pct": 3.7,
+        "volatilitaet_3m_pct": 13.7,
+        "max_drawdown_12m_pct": -9.9,
+        "abstand_52w_hoch_pct": -9.9,
+        "avg_daily_volume_usd": 320440755,
+        "abstand_sma50_pct": -6.3,
+        "abstand_sma200_pct": -3.6,
+        "beta_vs_spy": 0.32,
+        "handelstage": 501,
+        "letzter_kurs": 90.99,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "GLD",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 14.1,
+        "rendite_6m_pct": -1.8,
+        "volatilitaet_3m_pct": 23.4,
+        "max_drawdown_12m_pct": -26.4,
+        "abstand_52w_hoch_pct": -20.7,
+        "avg_daily_volume_usd": 3532542400,
+        "abstand_sma50_pct": -0.5,
+        "abstand_sma200_pct": -5.5,
+        "beta_vs_spy": 0.76,
+        "handelstage": 501,
+        "letzter_kurs": 393.41,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "SLV",
+      "gruppe": "B",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 37.4% > 35%",
+        "R3: -44.9% unter 52-W-Hoch (Grenze 40%)"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 41.7,
+        "rendite_6m_pct": -4.3,
+        "volatilitaet_3m_pct": 37.4,
+        "max_drawdown_12m_pct": -52.3,
+        "abstand_52w_hoch_pct": -44.9,
+        "avg_daily_volume_usd": 897066757,
+        "abstand_sma50_pct": 1.2,
+        "abstand_sma200_pct": -11.9,
+        "beta_vs_spy": 1.78,
+        "handelstage": 501,
+        "letzter_kurs": 58.14,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "USO",
+      "gruppe": "B",
+      "status": "verworfen",
+      "gruende": [
+        "R2: 3M-Volatilität 51.7% > 35%"
+      ],
+      "kennzahlen": {
+        "rendite_12m_pct": 92.7,
+        "rendite_6m_pct": 26.5,
+        "volatilitaet_3m_pct": 51.7,
+        "max_drawdown_12m_pct": -32.5,
+        "abstand_52w_hoch_pct": -8.4,
+        "avg_daily_volume_usd": 784905808,
+        "abstand_sma50_pct": 9.4,
+        "abstand_sma200_pct": 31.0,
+        "beta_vs_spy": -1.34,
+        "handelstage": 501,
+        "letzter_kurs": 148.33,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLE",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 36.1,
+        "rendite_6m_pct": 0.8,
+        "volatilitaet_3m_pct": 21.7,
+        "max_drawdown_12m_pct": -15.6,
+        "abstand_52w_hoch_pct": -5.9,
+        "avg_daily_volume_usd": 1788979566,
+        "abstand_sma50_pct": 0.5,
+        "abstand_sma200_pct": 10.5,
+        "beta_vs_spy": -0.31,
+        "handelstage": 501,
+        "letzter_kurs": 62.04,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLF",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 2.6,
+        "rendite_6m_pct": 11.8,
+        "volatilitaet_3m_pct": 13.3,
+        "max_drawdown_12m_pct": -15.2,
+        "abstand_52w_hoch_pct": -6.4,
+        "avg_daily_volume_usd": 1824600364,
+        "abstand_sma50_pct": -3.9,
+        "abstand_sma200_pct": 2.1,
+        "beta_vs_spy": 0.61,
+        "handelstage": 501,
+        "letzter_kurs": 54.84,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLK",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 41.2,
+        "rendite_6m_pct": 48.1,
+        "volatilitaet_3m_pct": 28.1,
+        "max_drawdown_12m_pct": -16.2,
+        "abstand_52w_hoch_pct": -1.0,
+        "avg_daily_volume_usd": 1464652618,
+        "abstand_sma50_pct": 6.4,
+        "abstand_sma200_pct": 19.9,
+        "beta_vs_spy": 1.73,
+        "handelstage": 501,
+        "letzter_kurs": 196.27,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLV",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 27.3,
+        "rendite_6m_pct": 17.1,
+        "volatilitaet_3m_pct": 18.5,
+        "max_drawdown_12m_pct": -10.8,
+        "abstand_52w_hoch_pct": -2.8,
+        "avg_daily_volume_usd": 1497377551,
+        "abstand_sma50_pct": 1.8,
+        "abstand_sma200_pct": 9.2,
+        "beta_vs_spy": 0.28,
+        "handelstage": 501,
+        "letzter_kurs": 170.7,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLI",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 12.7,
+        "rendite_6m_pct": 5.7,
+        "volatilitaet_3m_pct": 14.9,
+        "max_drawdown_12m_pct": -12.5,
+        "abstand_52w_hoch_pct": -8.6,
+        "avg_daily_volume_usd": 1222445891,
+        "abstand_sma50_pct": -4.2,
+        "abstand_sma200_pct": -0.9,
+        "beta_vs_spy": 0.94,
+        "handelstage": 501,
+        "letzter_kurs": 170.43,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLP",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 5.5,
+        "rendite_6m_pct": 1.1,
+        "volatilitaet_3m_pct": 16.1,
+        "max_drawdown_12m_pct": -9.9,
+        "abstand_52w_hoch_pct": -8.8,
+        "avg_daily_volume_usd": 880689346,
+        "abstand_sma50_pct": -3.1,
+        "abstand_sma200_pct": -1.9,
+        "beta_vs_spy": -0.06,
+        "handelstage": 501,
+        "letzter_kurs": 82.06,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLU",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -7.5,
+        "rendite_6m_pct": -12.8,
+        "volatilitaet_3m_pct": 14.7,
+        "max_drawdown_12m_pct": -17.5,
+        "abstand_52w_hoch_pct": -17.2,
+        "avg_daily_volume_usd": 887118324,
+        "abstand_sma50_pct": -8.7,
+        "abstand_sma200_pct": -11.1,
+        "beta_vs_spy": 0.15,
+        "handelstage": 501,
+        "letzter_kurs": 39.51,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLY",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -6.4,
+        "rendite_6m_pct": 1.6,
+        "volatilitaet_3m_pct": 19.5,
+        "max_drawdown_12m_pct": -15.1,
+        "abstand_52w_hoch_pct": -11.2,
+        "avg_daily_volume_usd": 801059685,
+        "abstand_sma50_pct": -3.7,
+        "abstand_sma200_pct": -5.2,
+        "beta_vs_spy": 1.16,
+        "handelstage": 501,
+        "letzter_kurs": 110.56,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLB",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 13.4,
+        "rendite_6m_pct": 1.4,
+        "volatilitaet_3m_pct": 17.3,
+        "max_drawdown_12m_pct": -12.4,
+        "abstand_52w_hoch_pct": -7.2,
+        "avg_daily_volume_usd": 571186774,
+        "abstand_sma50_pct": -3.7,
+        "abstand_sma200_pct": -1.5,
+        "beta_vs_spy": 0.73,
+        "handelstage": 501,
+        "letzter_kurs": 49.8,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "XLC",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": -3.5,
+        "rendite_6m_pct": 3.8,
+        "volatilitaet_3m_pct": 20.7,
+        "max_drawdown_12m_pct": -12.2,
+        "abstand_52w_hoch_pct": -5.9,
+        "avg_daily_volume_usd": 616845349,
+        "abstand_sma50_pct": 1.5,
+        "abstand_sma200_pct": -0.9,
+        "beta_vs_spy": 0.68,
+        "handelstage": 501,
+        "letzter_kurs": 112.96,
+        "kurs_datum": "2026-09-25"
+      }
+    },
+    {
+      "ticker": "RSP",
+      "gruppe": "B",
+      "status": "bestanden",
+      "gruende": [],
+      "kennzahlen": {
+        "rendite_12m_pct": 13.1,
+        "rendite_6m_pct": 10.5,
+        "volatilitaet_3m_pct": 10.1,
+        "max_drawdown_12m_pct": -8.2,
+        "abstand_52w_hoch_pct": -5.2,
+        "avg_daily_volume_usd": 1614086862,
+        "abstand_sma50_pct": -2.7,
+        "abstand_sma200_pct": 2.8,
+        "beta_vs_spy": 0.7,
+        "handelstage": 501,
+        "letzter_kurs": 211.11,
+        "kurs_datum": "2026-09-25"
+      }
+    }
+  ],
+  "verworfen": [
+    {
+      "ticker": "MSFT",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 40.9% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 40.9,
+        "abstand_52w_hoch_pct": -4.8,
+        "avg_daily_volume_usd": 14501360631,
+        "beta_vs_spy": 0.97
+      }
+    },
+    {
+      "ticker": "GOOGL",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 35.3% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 35.3,
+        "abstand_52w_hoch_pct": -14.6,
+        "avg_daily_volume_usd": 10038094112,
+        "beta_vs_spy": 1.35
+      }
+    },
+    {
+      "ticker": "CSCO",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 35.3% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 35.3,
+        "abstand_52w_hoch_pct": -17.9,
+        "avg_daily_volume_usd": 2383989236,
+        "beta_vs_spy": 1.03
+      }
+    },
+    {
+      "ticker": "JBK",
+      "gruppe": "A",
+      "grund": "R1: Ø Tagesvolumen 0.0M USD < 20M USD",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 10.6,
+        "abstand_52w_hoch_pct": -8.9,
+        "avg_daily_volume_usd": 8307,
+        "beta_vs_spy": -0.01
+      }
+    },
+    {
+      "ticker": "MRK",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 35.1% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 35.1,
+        "abstand_52w_hoch_pct": -4.9,
+        "avg_daily_volume_usd": 1400736091,
+        "beta_vs_spy": 0.21
+      }
+    },
+    {
+      "ticker": "ADBE",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 48.4% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 48.4,
+        "abstand_52w_hoch_pct": -34.7,
+        "avg_daily_volume_usd": 1324559207,
+        "beta_vs_spy": 0.36
+      }
+    },
+    {
+      "ticker": "CRM",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 60.9% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 60.9,
+        "abstand_52w_hoch_pct": -12.1,
+        "avg_daily_volume_usd": 2870896190,
+        "beta_vs_spy": 0.46
+      }
+    },
+    {
+      "ticker": "ORCL",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 54.1% > 35%; R3: -56.2% unter 52-W-Hoch (Grenze 40%)",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 54.1,
+        "abstand_52w_hoch_pct": -56.2,
+        "avg_daily_volume_usd": 4679287373,
+        "beta_vs_spy": 2.01
+      }
+    },
+    {
+      "ticker": "AMZN",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 41.4% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 41.4,
+        "abstand_52w_hoch_pct": -12.1,
+        "avg_daily_volume_usd": 11244839830,
+        "beta_vs_spy": 1.44
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 38.7% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 38.7,
+        "abstand_52w_hoch_pct": -4.5,
+        "avg_daily_volume_usd": 26675642037,
+        "beta_vs_spy": 1.89
+      }
+    },
+    {
+      "ticker": "META",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 50.3% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 50.3,
+        "abstand_52w_hoch_pct": -3.3,
+        "avg_daily_volume_usd": 12296222699,
+        "beta_vs_spy": 1.44
+      }
+    },
+    {
+      "ticker": "NFLX",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 37.4% > 35%; R3: -42.7% unter 52-W-Hoch (Grenze 40%)",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 37.4,
+        "abstand_52w_hoch_pct": -42.7,
+        "avg_daily_volume_usd": 2850461486,
+        "beta_vs_spy": 0.3
+      }
+    },
+    {
+      "ticker": "AMD",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 69.7% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 69.7,
+        "abstand_52w_hoch_pct": 0.0,
+        "avg_daily_volume_usd": 12862559026,
+        "beta_vs_spy": 3.18
+      }
+    },
+    {
+      "ticker": "INTC",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 75.7% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 75.7,
+        "abstand_52w_hoch_pct": -12.7,
+        "avg_daily_volume_usd": 11296262697,
+        "beta_vs_spy": 2.91
+      }
+    },
+    {
+      "ticker": "QCOM",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 47.7% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 47.7,
+        "abstand_52w_hoch_pct": -19.5,
+        "avg_daily_volume_usd": 2440152302,
+        "beta_vs_spy": 2.1
+      }
+    },
+    {
+      "ticker": "MU",
+      "gruppe": "A",
+      "grund": "R2: 3M-Volatilität 79.5% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 79.5,
+        "abstand_52w_hoch_pct": -10.8,
+        "avg_daily_volume_usd": 35396057001,
+        "beta_vs_spy": 3.31
+      }
+    },
+    {
+      "ticker": "SLV",
+      "gruppe": "B",
+      "grund": "R2: 3M-Volatilität 37.4% > 35%; R3: -44.9% unter 52-W-Hoch (Grenze 40%)",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 37.4,
+        "abstand_52w_hoch_pct": -44.9,
+        "avg_daily_volume_usd": 897066757,
+        "beta_vs_spy": 1.78
+      }
+    },
+    {
+      "ticker": "USO",
+      "gruppe": "B",
+      "grund": "R2: 3M-Volatilität 51.7% > 35%",
+      "kennzahlen": {
+        "volatilitaet_3m_pct": 51.7,
+        "abstand_52w_hoch_pct": -8.4,
+        "avg_daily_volume_usd": 784905808,
+        "beta_vs_spy": -1.34
+      }
+    }
+  ]
+}

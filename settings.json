@@ -1,0 +1,56 @@
+{
+  "ki": {
+    "konfidenz_cap": 60,
+    "ki_temperatur": 0.1,
+    "min_konfidenz_kaufen": 60,
+    "exit_score_schwelle": 70,
+    "news_swap_aktiv": true,
+    "news_swap_min_score": 75,
+    "multi_timeframe_lernen": true
+  },
+  "lernen": {
+    "decay_lambda": 0.01,
+    "anti_min_n": 5,
+    "anti_min_widerlegt_pct": 60,
+    "max_regeln": 40,
+    "lern_modus": "auto"
+  },
+  "engine_bremsen": {
+    "max_depot_pro_ticker": 8,
+    "drawdown_sperre_prozent": 30,
+    "wochenende_handel": false
+  },
+  "news": {
+    "news_min_score": 20,
+    "news_max_alter_std": 48
+  },
+  "kapital": {
+    "gesamt_budget": 10000,
+    "aktien_anteil": 40,
+    "etf_anteil": 30,
+    "spec_anteil": 30,
+    "max_gesamt_drawdown": 25
+  },
+  "depot_struktur": {
+    "aktien_stufen": 20,
+    "aktien_schritt": 5,
+    "max_spec_depots": 48,
+    "etf_stufen_aktiv": [
+      "Geldmarkt",
+      "Anleihen",
+      "Markt",
+      "Sektor",
+      "Thema",
+      "Gehebelt"
+    ]
+  },
+  "risk_parameter": {
+    "moderate_position_size": 0.35,
+    "moderate_stop_loss": 0.92,
+    "moderate_take_profit": 1.12,
+    "aggressive_position_size": 0.5,
+    "aggressive_stop_loss": 0.85,
+    "aggressive_take_profit": 1.2
+  },
+  "max_spec_depots": 60
+}

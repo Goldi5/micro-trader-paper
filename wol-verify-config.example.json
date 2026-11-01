@@ -1,0 +1,12 @@
+{
+  "pc_ip": "192.168.178.XXX",
+  "pc_mac": "AA:BB:CC:DD:EE:FF",
+  "ping_port": 135,
+  "fritzbox_user": "",
+  "fritzbox_pass": "",
+  "whatsapp_target": "whatsapp:DEINE_ID@lid",
+  "_info": "(Beschreibung)",
+  "_fritzbox_tr064_unauth": "(Beschreibung)",
+  "_kandidaten_microtrader_pc": "(Beschreibung)",
+  "_hinweis": "(Beschreibung)"
+}

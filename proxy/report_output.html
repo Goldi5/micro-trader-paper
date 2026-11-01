@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root {
+    /* Light theme (default) */
+    --bg: #f4f7fb;
+    --bg-container: #ffffff;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --header-border: #e2e8f0;
+    --table-header-bg: #f1f5f9;
+    --table-header-text: #475569;
+    --card-bg: rgba(255,255,255,0.85);
+    --primary: #0d6efd;
+    --accent: #ff6b35;
+    --success: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --score-high-bg: rgba(5,150,105,0.13);
+    --score-high-text: #059669;
+    --score-mid-bg: rgba(245,158,11,0.13);
+    --score-mid-text: #d97706;
+    --score-low-bg: rgba(220,38,38,0.13);
+    --score-low-text: #dc2626;
+    --risk-ok-bg: rgba(5,150,105,0.10);
+    --risk-ok-text: #059669;
+    --risk-warn-bg: rgba(245,158,11,0.10);
+    --risk-warn-text: #d97706;
+    --risk-dng-bg: rgba(220,38,38,0.10);
+    --risk-dng-text: #dc2626;
+    --ticker-chip-bg: #f1f5f9;
+    --footer-border: #e2e8f0;
+    --footer-text: #94a3b8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f172a;
+      --bg-container: #1e293b;
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: #334155;
+      --header-border: #334155;
+      --table-header-bg: #1e293b;
+      --table-header-text: #cbd5e1;
+      --card-bg: rgba(30,41,59,0.85);
+      --primary: #3b82f6;
+      --accent: #fb923c;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --score-high-bg: rgba(16,185,129,0.15);
+      --score-high-text: #10b981;
+      --score-mid-bg: rgba(245,158,11,0.15);
+      --score-mid-text: #f59e0b;
+      --score-low-bg: rgba(239,68,68,0.15);
+      --score-low-text: #ef4444;
+      --risk-ok-bg: rgba(16,185,129,0.12);
+      --risk-ok-text: #10b981;
+      --risk-warn-bg: rgba(245,158,11,0.12);
+      --risk-warn-text: #f59e0b;
+      --risk-dng-bg: rgba(239,68,68,0.12);
+      --risk-dng-text: #ef4444;
+      --ticker-chip-bg: #1e293b;
+      --footer-border: #334155;
+      --footer-text: #64748b;
+    }
+  }
+  /* Explicit theme override via data-theme attribute */
+  html[data-theme="dark"] {
+    --bg: #0f172a;
+    --bg-container: #1e293b;
+    --text: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border: #334155;
+    --header-border: #334155;
+    --table-header-bg: #1e293b;
+    --table-header-text: #cbd5e1;
+    --card-bg: rgba(30,41,59,0.85);
+    --primary: #3b82f6;
+    --accent: #fb923c;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --score-high-bg: rgba(16,185,129,0.15);
+    --score-high-text: #10b981;
+    --score-mid-bg: rgba(245,158,11,0.15);
+    --score-mid-text: #f59e0b;
+    --score-low-bg: rgba(239,68,68,0.15);
+    --score-low-text: #ef4444;
+    --risk-ok-bg: rgba(16,185,129,0.12);
+    --risk-ok-text: #10b981;
+    --risk-warn-bg: rgba(245,158,11,0.12);
+    --risk-warn-text: #f59e0b;
+    --risk-dng-bg: rgba(239,68,68,0.12);
+    --risk-dng-text: #ef4444;
+    --ticker-chip-bg: #1e293b;
+    --footer-border: #334155;
+    --footer-text: #64748b;
+  }
+  html[data-theme="light"] {
+    --bg: #f4f7fb;
+    --bg-container: #ffffff;
+    --text: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --header-border: #e2e8f0;
+    --table-header-bg: #f1f5f9;
+    --table-header-text: #475569;
+    --card-bg: rgba(255,255,255,0.85);
+    --primary: #0d6efd;
+    --accent: #ff6b35;
+    --success: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --score-high-bg: rgba(5,150,105,0.13);
+    --score-high-text: #059669;
+    --score-mid-bg: rgba(245,158,11,0.13);
+    --score-mid-text: #d97706;
+    --score-low-bg: rgba(220,38,38,0.13);
+    --score-low-text: #dc2626;
+    --risk-ok-bg: rgba(5,150,105,0.10);
+    --risk-ok-text: #059669;
+    --risk-warn-bg: rgba(245,158,11,0.10);
+    --risk-warn-text: #d97706;
+    --risk-dng-bg: rgba(220,38,38,0.10);
+    --risk-dng-text: #dc2626;
+    --ticker-chip-bg: #f1f5f9;
+    --footer-border: #e2e8f0;
+    --footer-text: #94a3b8;
+  }
+  @page {
+    size: A4;
+    margin: 2.5cm;
+    @top-left { content: "Micro-Trader"; font-size: 8pt; color: var(--text-muted); }
+    @top-right { content: "Performance-Bericht {date}"; font-size: 8pt; color: var(--text-muted); }
+    @bottom-center { content: "Seite " counter(page) " von " counter(pages); font-size: 8pt; color: var(--footer-text); }
+  }
+  body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; line-height: 1.5; color: var(--text); background: var(--bg); }
+  .container { background: var(--bg-container); padding: 30px; border-radius: 14px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 2px solid var(--header-border); }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; }
+  .logo-text { font-size: 22px; font-weight: 700; color: var(--primary); }
+  .summary-grid { display: flex; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+  .summary-card { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .summary-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 0.5pt; color: var(--text-muted); margin-bottom: 6px; }
+  .summary-value { font-size: 18pt; font-weight: 700; }
+  .success { color: var(--success); } .danger { color: var(--danger); }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 8.5pt; }
+  th { background: var(--table-header-bg); text-align: left; padding: 7px 9px; border-bottom: 2px solid var(--border); font-weight: 600; color: var(--table-header-text); }
+  td { padding: 7px 9px; border-bottom: 1px solid var(--border); }
+  tr.last-row td { border-bottom: none; }
+  .mono { font-family: 'Roboto Mono', monospace; }
+  .score-pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 8pt; font-weight: 700; font-family: monospace; }
+  .score-high { background: var(--score-high-bg); color: var(--score-high-text); }
+  .score-mid { background: var(--score-mid-bg); color: var(--score-mid-text); }
+  .score-low { background: var(--score-low-bg); color: var(--score-low-text); }
+  .risk-badge { display: inline-block; padding: 2px 9px; border-radius: 10px; font-size: 7.5pt; font-weight: 600; }
+  .risk-ok { background: var(--risk-ok-bg); color: var(--risk-ok-text); }
+  .risk-warn { background: var(--risk-warn-bg); color: var(--risk-warn-text); }
+  .risk-dng { background: var(--risk-dng-bg); color: var(--risk-dng-text); }
+  .ticker-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 7pt; font-family: monospace; background: var(--ticker-chip-bg); }
+  .mode-live { background: var(--success); color: white; }
+  .mode-paper { background: var(--primary); color: white; }
+  .mode-shadow { background: var(--warning); color: white; }
+  .footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--footer-border); font-size: 8.5pt; color: var(--footer-text); text-align: center; }
+  h2 { font-size: 14pt; color: var(--primary); margin: 24px 0 12px; page-break-after: avoid; }
+  table { page-break-inside: avoid; } tr { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">📈</div>
+      <div><div class="logo-text">Micro-Trader</div><div style="font-size:14px;color:var(--text)">Performance-Bericht</div></div>
+    </div>
+    <div style="font-size:8.5pt;color:var(--text-secondary)">Erstellt: {date}</div>
+  </div>
+  <div class="summary-grid">
+    <div class="summary-card"><div class="summary-label">Gesamtwert</div><div class="summary-value">${total_value}</div></div>
+    <div class="summary-card"><div class="summary-label">Ø Performance</div><div class="summary-value {total_perf_color}">{total_perf}%</div></div>
+    <div class="summary-card"><div class="summary-label">Depots</div><div class="summary-value">{count}</div></div>
+    <div class="summary-card"><div class="summary-label">Gesamt-Trades</div><div class="summary-value">{total_trades}</div></div>
+    <div class="summary-card"><div class="summary-label">Ø Risiko</div><div class="summary-value">{avg_risk}/100</div></div>
+  </div>
+  <h2>Portfolio-Performance</h2>
+  <table>
+    <thead><tr><th>#</th><th>Depot</th><th>Modus</th><th align="right">Start ($)</th><th align="right">Wert ($)</th><th align="right">Perf.</th><th align="right">Trades</th><th align="right">Risiko</th><th>Status</th></tr></thead>
+    <tbody>{rows}</tbody>
+  </table>
+  <h2>Risiko-Details</h2>
+  <table>
+    <thead><tr><th>Depot</th><th align="right">Score</th><th align="right">Max-DD</th><th align="right">Turnover</th><th align="right">Win-Rate</th><th>Max-Konzentration</th></tr></thead>
+    <tbody>{risk_rows}</tbody>
+  </table>
+  <div class="footer">Micro-Trader PDF Report • {date_full}</div>
+</div>
+</body>
+</html>

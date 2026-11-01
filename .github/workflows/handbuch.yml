@@ -1,0 +1,52 @@
+name: Handbuch
+
+# Erzeugt docs/handbuch/HANDBUCH.md als PDF.
+# - Release veroeffentlicht -> PDF wird an das Release angehaengt.
+# - Push auf main          -> PDF als Download-Artefakt der Action.
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - "docs/handbuch/**"
+      - "tools/handbuch_pdf.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # fuer git describe
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: reportlab installieren
+        run: pip install "reportlab==5.0.1"
+
+      - name: PDF erzeugen
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          [ -n "$VERSION" ] || VERSION="$(git describe --tags --always)"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          python tools/handbuch_pdf.py --version "$VERSION" \
+            --aus "Micro-Trader-Handbuch-$VERSION.pdf"
+
+      - name: An das Release haengen
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$VERSION" "Micro-Trader-Handbuch-$VERSION.pdf" --clobber
+
+      - name: Als Artefakt bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Micro-Trader-Handbuch-${{ env.VERSION }}
+          path: Micro-Trader-Handbuch-*.pdf

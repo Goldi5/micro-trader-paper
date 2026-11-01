@@ -1,0 +1,254 @@
+{
+  "erstellt_am": "2026-09-27T20:30:52.282410+00:00",
+  "quelle": "leiter_hart.py - harte Nebenbedingungen",
+  "maxrho_grenze": 0.75,
+  "max_anteil": 0.3,
+  "monoton": true,
+  "stufen": [
+    {
+      "ticker": [
+        "ABBV",
+        "CVX",
+        "GLD",
+        "MRK",
+        "UNH",
+        "XLP",
+        "XLU"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 0.2751,
+      "maxrho": 0.497,
+      "rho_paar": [
+        "ABBV",
+        "MRK"
+      ],
+      "vol_pct": 25.3,
+      "beta_ziel_erreicht": true,
+      "risk": 10,
+      "beta_fenster": [
+        0.1,
+        0.45
+      ],
+      "beta_untergrenze_erzwungen": 0.1
+    },
+    {
+      "ticker": [
+        "ACN",
+        "LIN",
+        "LLY",
+        "UNH",
+        "VNQ",
+        "WMT",
+        "XLE"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 0.4748,
+      "maxrho": 0.46,
+      "rho_paar": [
+        "VNQ",
+        "LIN"
+      ],
+      "vol_pct": 28.7,
+      "beta_ziel_erreicht": true,
+      "risk": 25,
+      "beta_fenster": [
+        0.3,
+        0.65
+      ],
+      "beta_untergrenze_erzwungen": 0.3
+    },
+    {
+      "ticker": [
+        "ACN",
+        "LIN",
+        "LLY",
+        "SLV",
+        "TMO",
+        "VEA"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 0.6625,
+      "maxrho": 0.466,
+      "rho_paar": [
+        "VEA",
+        "SLV"
+      ],
+      "vol_pct": 31.6,
+      "beta_ziel_erreicht": true,
+      "risk": 40,
+      "beta_fenster": [
+        0.45,
+        0.85
+      ],
+      "beta_untergrenze_erzwungen": 0.475
+    },
+    {
+      "ticker": [
+        "AAPL",
+        "CRM",
+        "CSCO",
+        "EEM",
+        "MSFT",
+        "SLV",
+        "TMO",
+        "XLC"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 0.8817,
+      "maxrho": 0.522,
+      "rho_paar": [
+        "XLC",
+        "AAPL"
+      ],
+      "vol_pct": 30.7,
+      "beta_ziel_erreicht": true,
+      "risk": 55,
+      "beta_fenster": [
+        0.65,
+        1.1
+      ],
+      "beta_untergrenze_erzwungen": 0.662
+    },
+    {
+      "ticker": [
+        "AAPL",
+        "CSCO",
+        "GOOGL",
+        "IWM",
+        "META",
+        "MSFT",
+        "TXN"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 1.1244,
+      "maxrho": 0.513,
+      "rho_paar": [
+        "IWM",
+        "TXN"
+      ],
+      "vol_pct": 31.5,
+      "beta_ziel_erreicht": true,
+      "risk": 70,
+      "beta_fenster": [
+        0.9,
+        1.35
+      ],
+      "beta_untergrenze_erzwungen": 0.9
+    },
+    {
+      "ticker": [
+        "CSCO",
+        "INTC",
+        "MSFT",
+        "MU",
+        "QCOM",
+        "SLV",
+        "SPY",
+        "TXN"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 1.3771,
+      "maxrho": 0.579,
+      "rho_paar": [
+        "SPY",
+        "QCOM"
+      ],
+      "vol_pct": 44.0,
+      "beta_ziel_erreicht": true,
+      "risk": 85,
+      "beta_fenster": [
+        1.15,
+        1.6
+      ],
+      "beta_untergrenze_erzwungen": 1.15
+    },
+    {
+      "ticker": [
+        "INTC",
+        "META",
+        "NVDA",
+        "TXN"
+      ],
+      "gewichte": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "beta": 1.6401,
+      "maxrho": 0.43,
+      "rho_paar": [
+        "META",
+        "NVDA"
+      ],
+      "vol_pct": 48.7,
+      "beta_ziel_erreicht": true,
+      "risk": 95,
+      "beta_fenster": [
+        1.4,
+        1.9
+      ],
+      "beta_untergrenze_erzwungen": 1.4
+    }
+  ],
+  "warnungen": [],
+  "min_score": {
+    "10": 20.6,
+    "25": 18.3,
+    "40": 18.9,
+    "55": 16.1,
+    "70": 17.9,
+    "85": 19.3,
+    "95": 17.4
+  },
+  "min_score_herkunft": "40 % des besten erreichbaren Scores je Stufe, Mindestgrenze 5.0, gemessen am Leiter-Titelbestand"
+}

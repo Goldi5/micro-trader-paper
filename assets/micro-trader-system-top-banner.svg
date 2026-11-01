@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="620" viewBox="0 0 2400 620" role="img" aria-labelledby="title desc">
+  <title id="title">Micro Trader System — Top Banner</title>
+  <desc id="desc">Dark AI fintech banner with connected nodes and an upward market pulse.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#17112f"/>
+    </linearGradient>
+    <linearGradient id="pulse" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#20d9ff"/>
+      <stop offset="1" stop-color="#7b5cff"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="2400" height="620" fill="url(#bg)"/>
+  <path d="M0 535 C340 475 490 560 760 450 S1160 500 1410 300 S1840 400 2400 100" fill="none" stroke="#27304b" stroke-width="2"/>
+  <g transform="translate(160 115)">
+    <g fill="none" stroke="url(#pulse)" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+      <path d="M0 180 L125 95 L245 170 L420 25 L540 105" stroke-width="17" opacity=".32"/>
+      <path d="M0 180 L125 95 L245 170 L420 25 L540 105" stroke-width="7"/>
+    </g>
+    <g fill="#111827" stroke="url(#pulse)" stroke-width="8">
+      <circle cx="0" cy="180" r="25"/><circle cx="125" cy="95" r="25"/><circle cx="245" cy="170" r="25"/>
+    </g>
+    <path d="M420 25 L420 -12 L458 25" fill="none" stroke="#73e6b0" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="850" y="270" fill="#f8fafc" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700" letter-spacing="7">MICRO TRADER SYSTEM</text>
+  <text x="855" y="350" fill="#b8c1d9" font-family="Arial, Helvetica, sans-serif" font-size="31" letter-spacing="5">GOVERNED AI MARKET OPERATIONS</text>
+  <line x1="855" y1="400" x2="2040" y2="400" stroke="#2e3957" stroke-width="2"/>
+  <text x="855" y="470" fill="#73e6b0" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="4">AUDIT  •  RULES  •  LIVE GATE  •  LEARNING</text>
+  <text x="855" y="535" fill="#6b7280" font-family="Arial, Helvetica, sans-serif" font-size="18" letter-spacing="4">KI GENERIERT</text>
+</svg>
