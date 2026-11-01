@@ -8,7 +8,12 @@ Micro-Trader ist eine KI-unterstützte **Paper-Trading-Plattform**. Sie handelt 
 
 Grundprinzip: **Die KI schlägt vor, deterministische Regeln entscheiden.** Jede Order läuft durch den zentralen Risiko-Controller (`risk_controller.py`). Er kann jeden KI-Vorschlag ablehnen oder verkleinern.
 
+<!-- grafik: kennzahlen -->
+
 Micro-Trader läuft auf einem Linux-Server (z. B. VM oder Container) unter `/opt/micro-trader`, gesteuert über systemd. Der Code liegt öffentlich auf GitHub (`Goldi5/micro-trader-paper`).
+
+> [!IMPORTANT]
+> Micro-Trader ist ein Lern- und Experimentierprojekt. Es handelt nur mit virtuellem Geld und ist keine Anlageberatung.
 
 ## 2. Depotarten
 
@@ -20,12 +25,22 @@ Micro-Trader läuft auf einem Linux-Server (z. B. VM oder Container) unter `/opt
 
 Die Risikostufe (0–95) bestimmt Positionsgröße, maximale Positionsanzahl, erlaubte Tiers (Aktien, ETF, Hebel, Penny), Stop-Loss, Take-Profit und die Drawdown-Grenze.
 
+### Die Risikoleiter der Aktien-Depots
+
+<!-- grafik: risikoleiter -->
+
+> [!TIP]
+> Die Leiter ist ein Experiment: Alle Stufen bekommen dieselben Kandidaten und dieselbe KI. Der Vergleich im Tagesbericht zeigt, welches Risiko sich lohnt.
+
 ## 3. Ablauf eines Handelslaufs
+
+<!-- grafik: ablauf -->
 
 1. **Taktgeber:** Der Scheduler (`micro_trader_scheduler.py --loop`, Dienst `mt-scheduler`) läuft alle 15 Minuten.
 2. **Pipeline** (`micro-trader-pipeline.py`):
    - `engine`: News, Spec-Watch, Marktdaten. Ohne KI.
-   - `ki`/`full`: Spec-, ETF- und Aktien-Trader, Lernen und Reflexion. Nur bei offener US-Börse.
+   - `ki_welle`: ein Trader pro Lauf (Spec, ETF oder Aktien im Wechsel). So startet der Scheduler den Handel.
+   - `ki`/`full`: alle drei Trader, Lernen und Reflexion in einem Lauf. Nur bei offener US-Börse.
 3. **Trader je Depot:**
    1. **Harte Ausstiege zuerst** (`exits.py`): Stop-Loss, Trailing-Stop und Take-Profit. Ein ausgelöster Ausstieg hat Vorrang vor der KI.
    2. **KI-Entscheidung:** ein gebündelter Aufruf für alle Depots, mit Kontext (Konzentration, Sektor, Fundamentaldaten, gelernte Regeln). Antworten werden 1 h zwischengespeichert. Gespeicherte Aktionen werden **nicht** erneut ausgeführt.
@@ -41,6 +56,9 @@ Die Risikostufe (0–95) bestimmt Positionsgröße, maximale Positionsanzahl, er
 - **Drawdown-Sperre:** Fällt ein Depot um mehr als die Grenze seiner Risikostufe unter sein Hoch, wird es eingefroren. Der Watchdog meldet das per ntfy.
 - **Stop-Loss / Trailing-Stop:** Der Stop beginnt beim Faktor der Risikostufe (z. B. 0,92 = 8 % unter Einstand) und zieht mit dem Höchstkurs seit Kauf nach. Er sinkt nie.
 - **Konzentrations-Bremse:** Ein Titel darf nur in begrenzt vielen Depots gleichzeitig liegen (`engine_bremsen.max_depot_pro_ticker`).
+
+> [!NOTE]
+> Der Risiko-Controller hat immer das letzte Wort. Die KI kann einen Kauf vorschlagen, aber nie eine Regel umgehen.
 
 ## 5. KI
 
@@ -96,7 +114,10 @@ python3 -m venv venv && venv/bin/pip install -r requirements.txt
 
 Danach `.env` mit den Zugangsdaten anlegen (KI-Anbieter, optional SMTP) und die Dienste einrichten. Vorlagen für systemd liegen in `deploy/systemd/` (Dashboard, Scheduler, Proxy, Watchdog, Screener, Datenbank-Aufräumen, Modell-Scout), siehe `deploy/systemd/README.md`.
 
-Den Handel steuert allein der Scheduler (`mt-scheduler`). Er startet die Pipeline alle 15 Minuten, bei offener US-Börse abwechselnd als KI-Welle für einen der drei Trader. Kein zweiter Taktgeber parallel, sonst laufen Handelsläufe doppelt.
+Den Handel steuert allein der Scheduler (`mt-scheduler`). Er startet die Pipeline alle 15 Minuten, bei offener US-Börse abwechselnd als KI-Welle für einen der drei Trader.
+
+> [!WARNING]
+> Kein zweiter Taktgeber parallel (zum Beispiel ein zusätzlicher Timer mit `--mode full`). Sonst laufen Handelsläufe doppelt.
 
 ### Update einspielen
 
@@ -111,7 +132,8 @@ cd /opt/micro-trader && ./deploy.sh
 
 `deploy.sh` zeigt die neuen Commits und fragt nach. Danach spielt es den Stand per Fast-Forward ein und installiert geänderte Pakete. Anschließend prüft es Syntax und Offline-Tests und startet erst dann die Dienste neu. Dateien, die ein Update aus Git entfernt (Laufzeitdaten), werden vorher gesichert und danach wieder hingelegt (`~/mt-deploy-sicherung/`). Schlägt eine Prüfung fehl, bricht es **vor** dem Neustart ab.
 
-**Nicht** `git pull` verwenden. Das würde Laufzeitdateien löschen, die Git verlassen.
+> [!WARNING]
+> **Nicht** `git pull` verwenden. Das würde Laufzeitdateien löschen, die Git verlassen.
 
 ### Tests
 
@@ -139,6 +161,9 @@ Die Tests liegen in `tests/` und laufen nie im Live-Ordner. GitHub führt bei je
 
 Einrichten: die App „ntfy“ installieren, ein langes zufälliges Topic abonnieren und denselben Namen in `.watchdog_ntfy_topic` eintragen. Testen mit `python3 mt_watchdog.py --force-alarm`.
 
+> [!TIP]
+> Das Topic ist wie ein Passwort: Wer es kennt, kann die Alarme mitlesen. Einen langen Zufallsnamen wählen, z. B. mit `openssl rand -hex 16`.
+
 ## 11. Sicherheit
 
 - Geheimnisse liegen nur auf dem Server, nie in Git: `.env` (API-Keys, SMTP), `security_users.json`, `.session_secret`, `.csrf_secret`, `.watchdog_ntfy_topic`, `nous_auth.json`, `wol-verify-config.json`.
@@ -165,6 +190,7 @@ rm /opt/micro-trader/.csrf_secret /opt/micro-trader/.session_secret && systemctl
 - Ein Release entsteht auf GitHub über „Releases → Draft a new release“ mit einem Tag wie `v2.60.0`.
 - Die GitHub-Action **Handbuch** erzeugt daraus automatisch `Micro-Trader-Handbuch-<version>.pdf` und hängt es an das Release. Bei jedem Push auf `main` wird das PDF zusätzlich als Download-Artefakt gebaut.
 - `deploy.sh` erzeugt das PDF auch lokal unter `docs/handbuch/Micro-Trader-Handbuch.pdf`.
+- **Gestaltung:** `tools/handbuch_pdf.py` setzt das Markdown in ein eigenes Layout (`docs/handbuch/handbuch.css`) und lässt Chromium das PDF drucken. Kästen entstehen aus `> [!TIP]`, `> [!NOTE]`, `> [!IMPORTANT]` und `> [!WARNING]`, Grafiken aus `<!-- grafik: ablauf -->`, `risikoleiter` und `kennzahlen`. Die Risikoleiter liest ihre Werte beim Bau direkt aus dem Code. Ohne Chromium oder das Paket `markdown` entsteht ein einfaches PDF (`tools/handbuch_pdf_einfach.py`).
 - **Pflege:** Dieses Handbuch ist die Quelle (`docs/handbuch/HANDBUCH.md`). Wer eine Funktion ändert, passt den passenden Abschnitt im selben Pull Request an.
 - **README-Stand:** Nach jedem Push auf `main` schreibt die Action **README-Stand** Version, Datum und die letzten Änderungen in den Abschnitt „Letzter Stand“ der README (`tools/stand_aktualisieren.py`). Die Version kommt aus dem letzten Release-Tag, ersatzweise aus `version.json`.
 

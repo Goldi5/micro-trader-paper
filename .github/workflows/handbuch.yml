@@ -10,7 +10,7 @@ on:
     branches: [main]
     paths:
       - "docs/handbuch/**"
-      - "tools/handbuch_pdf.py"
+      - "tools/handbuch_pdf*.py"
   workflow_dispatch:
 
 permissions:
@@ -28,8 +28,10 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: reportlab installieren
-        run: pip install "reportlab==5.0.1"
+      # Gestaltetes PDF: markdown + Chrome (auf ubuntu-latest vorinstalliert).
+      # reportlab nur fuer den einfachen Ersatzweg.
+      - name: Pakete installieren
+        run: pip install "markdown==3.10" "reportlab==5.0.1"
 
       - name: PDF erzeugen
         run: |
