@@ -45,10 +45,11 @@ Die KI schlägt vor, feste Regeln entscheiden, was tatsächlich gehandelt wird. 
 
 | Version | Stand | Commit |
 |---|---|---|
-| 2.60.0 | 01.11.2026 22:44 | `841c014` |
+| 2.60.0 | 01.11.2026 22:49 | `f514ab6` |
 
 Letzte Änderungen:
 
+- 01.11.2026 – Handbuch-Action: Version ohne Commit-Anhang, versioniertes PDF ebenfalls ersetzen
 - 01.11.2026 – README neu gestaltet: Banner, Badges, PDF-Link, Funktionen, Ablauf-Diagramm
 - 01.11.2026 – Handbuch-PDF neu gestaltet: Titelseite, Inhaltsverzeichnis, Kästen, Grafiken
 - 01.11.2026 – Allgemein statt persoenlich: Installation, systemd-Vorlagen, KI-Wellen-Fix
