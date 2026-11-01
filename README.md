@@ -16,7 +16,7 @@ Als PDF hängt es an jedem [Release](../../releases) und wird bei jedem Deploy u
 
 | Version | Stand | Commit |
 |---|---|---|
-| v2.60.0 | 01.11.2026 21:00 | `4404bee` |
+| 2.60.0 | 01.11.2026 21:02 | `b9a13fc` |
 
 Letzte Änderungen:
 
