@@ -1,0 +1,13 @@
+# Beispiel: Node-Proxy (127.0.0.1:8765, Token in proxy_token)
+[Unit]
+Description=Micro-Trader Proxy
+After=network-online.target
+
+[Service]
+User=microtrader
+WorkingDirectory=/opt/micro-trader/proxy
+ExecStart=/usr/bin/node proxy-server.mjs
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

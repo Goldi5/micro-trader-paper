@@ -1,0 +1,10 @@
+# Beispiel: Wochen-Screener
+[Unit]
+Description=Micro-Trader Wochen-Screener
+
+[Service]
+Type=oneshot
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python screener_woche.py

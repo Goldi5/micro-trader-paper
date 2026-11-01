@@ -1,0 +1,9 @@
+[Unit]
+Description=Micro-Trader DB-Aufraeumen (30 Tage) (Zeitplan)
+
+[Timer]
+OnCalendar=*-*-* 03:40
+Persistent=true
+
+[Install]
+WantedBy=timers.target

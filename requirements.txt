@@ -1,4 +1,4 @@
-# Abgeleitet aus `venv/bin/pip freeze` im LXC 610 (Python 3.13.5, 01.11.2026).
+# Abgeleitet aus `venv/bin/pip freeze` des Produktivsystems (Python 3.13.5, 01.11.2026).
 # Debian-Systempakete (python-apt, reportbug, ...) und Build-Werkzeuge
 # (gyp-next, wheel) sind bewusst weggelassen.
 # Installation: venv/bin/pip install -r requirements.txt

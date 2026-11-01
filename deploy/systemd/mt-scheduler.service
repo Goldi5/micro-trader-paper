@@ -1,0 +1,14 @@
+# Beispiel: Scheduler-Loop (Taktgeber fuer die Handelslaeufe, alle 15 min)
+[Unit]
+Description=Micro-Trader Scheduler
+After=network-online.target
+
+[Service]
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python micro_trader_scheduler.py --loop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

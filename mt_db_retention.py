@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-mt_db_retention.py — Datenbank-Retention fuer depot_snapshot (CT 610).
+mt_db_retention.py — Datenbank-Retention fuer depot_snapshot.
 
 ENTSCHEIDUNG: VERDICHTUNG, KEIN LOESCHEN von Jungem.
 

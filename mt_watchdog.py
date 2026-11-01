@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-mt_watchdog.py — Ausfall-Watchdog fuer den Micro-Trader (CT 610).
+mt_watchdog.py — Ausfall-Watchdog fuer den Micro-Trader.
 
 WARUM DIESES SKRIPT EXISTIERT:
   Das System war 4 Wochen still: seit 2026-09-08 keine KI-Entscheidung,
@@ -302,7 +302,7 @@ def ntfy_topic():
 
 def send_ntfy(alarm, d, topic):
     body = (
-        "MICRO-TRADER ALARM (CT 610)\n"
+        "MICRO-TRADER ALARM\n"
         "%s\n\n%s\n\n"
         "Letzte KI-Entscheidung: %s (vor %.1fh)\n"
         "Letzter Trade:          %s (vor %.1fh)\n"
@@ -336,7 +336,7 @@ def send_taildrop(alarm, d):
     if not TS_TARGET:
         return False, "kein Ziel konfiguriert (.watchdog_ts_target)"
     body = (
-        "MICRO-TRADER ALARM (CT 610) %s\n%s\n\n"
+        "MICRO-TRADER ALARM %s\n%s\n\n"
         "letzte KI: %s (%.1fh) | letzter Trade: %s (%.1fh)\n"
         "Marktzeit=%s Scheduler=%s Disk=%.1f%% geprueft=%s"
         % (alarm["title"], alarm["msg"],

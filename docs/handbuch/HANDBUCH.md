@@ -8,7 +8,7 @@ Micro-Trader ist eine KI-unterstützte **Paper-Trading-Plattform**. Sie handelt 
 
 Grundprinzip: **Die KI schlägt vor, deterministische Regeln entscheiden.** Jede Order läuft durch den zentralen Risiko-Controller (`risk_controller.py`). Er kann jeden KI-Vorschlag ablehnen oder verkleinern.
 
-Das System läuft auf einem Proxmox-Server im LXC-Container 610 („Trader“) unter `/opt/micro-trader`. Der Code liegt öffentlich auf GitHub (`Goldi5/micro-trader-paper`).
+Micro-Trader läuft auf einem Linux-Server (z. B. VM oder Container) unter `/opt/micro-trader`, gesteuert über systemd. Der Code liegt öffentlich auf GitHub (`Goldi5/micro-trader-paper`).
 
 ## 2. Depotarten
 
@@ -22,7 +22,7 @@ Die Risikostufe (0–95) bestimmt Positionsgröße, maximale Positionsanzahl, er
 
 ## 3. Ablauf eines Handelslaufs
 
-1. **Taktgeber:** Der Scheduler (`micro_trader_scheduler.py --loop`, Dienst `mt-scheduler`) läuft alle 15 Minuten. Zusätzlich startet der Timer `mt-kiwatch` alle 30 Minuten die Pipeline. Wer künftig allein führt, wird nach der Messung vom 02.11.2026 entschieden.
+1. **Taktgeber:** Der Scheduler (`micro_trader_scheduler.py --loop`, Dienst `mt-scheduler`) läuft alle 15 Minuten.
 2. **Pipeline** (`micro-trader-pipeline.py`):
    - `engine`: News, Spec-Watch, Marktdaten. Ohne KI.
    - `ki`/`full`: Spec-, ETF- und Aktien-Trader, Lernen und Reflexion. Nur bei offener US-Börse.
@@ -51,7 +51,7 @@ Die Risikostufe (0–95) bestimmt Positionsgröße, maximale Positionsanzahl, er
 
 ## 6. Dashboard
 
-- Adresse im LAN: `http://<LXC-IP>:5300` (Dienst `micro-trader`; der Port kommt aus der systemd-Unit). Der Dienst bindet aus Sicherheitsgründen an `127.0.0.1`; Zugriff über den Proxy bzw. einen Tunnel.
+- Das Dashboard läuft auf dem Port aus der systemd-Unit (Beispiel: 5300) und bindet aus Sicherheitsgründen nur an `127.0.0.1`. Zugriff von außen nur über einen Reverse-Proxy oder ein VPN (z. B. Tailscale), nie direkt ins Internet.
 - Anmeldung mit Benutzer und Passwort, für Admins mit MFA (TOTP). Sitzungen laufen nach 30 min Inaktivität bzw. spätestens nach 8 h ab.
 - Bereiche: Depots (Aktien/ETF/Spec), Potenzial, Börsenzeiten, KI-Log, Regeln, Ops-Center, Einstellungen, Admin.
 - Einstellungen werden im Dashboard validiert. Werte außerhalb des empfohlenen Bereichs erzeugen eine Risikowarnung.
@@ -86,34 +86,30 @@ Beispiel, um die Gebühr an einen Broker ohne Ordergebühr anzupassen:
 
 ## 9. Betrieb
 
-### Dienste und Timer (LXC 610)
+### Installation
 
-| Unit | Aufgabe | Zeitplan |
-|---|---|---|
-| `micro-trader` | Dashboard | dauerhaft |
-| `micro-trader-proxy` | Proxy (`proxy/proxy-server.mjs`, 127.0.0.1:8765) | dauerhaft |
-| `mt-scheduler` | Scheduler-Loop | dauerhaft, alle 15 min |
-| `mt-kiwatch` | Pipeline (`full`) | alle 30 min |
-| `mt-gate` | Gate-Skript (unter Linux ohne Wirkung, Entscheidung offen) | Mo–Fr 15–22 Uhr |
-| `mt-monitor` | Börsen-Monitor | Mo–Fr 15–22 Uhr stündlich |
-| `mt-watchdog` | Überwachung und Alarme | alle 30 min |
-| `mt-screener` | Wochen-Screener | So 05:30 |
-| `mt-retention` | DB-Aufräumen (30 Tage) | täglich 03:40 |
-| `modell-scout` | KI-Modelle prüfen | stündlich |
-| `mt-wolverify` | PC-Erkennung (Wake-on-LAN) | alle 5 min |
+```
+git clone https://github.com/Goldi5/micro-trader-paper.git /opt/micro-trader
+cd /opt/micro-trader
+python3 -m venv venv && venv/bin/pip install -r requirements.txt
+```
+
+Danach `.env` mit den Zugangsdaten anlegen (KI-Anbieter, optional SMTP) und die Dienste einrichten. Vorlagen für systemd liegen in `deploy/systemd/` (Dashboard, Scheduler, Proxy, Watchdog, Screener, Datenbank-Aufräumen, Modell-Scout), siehe `deploy/systemd/README.md`.
+
+Den Handel steuert allein der Scheduler (`mt-scheduler`). Er startet die Pipeline alle 15 Minuten, bei offener US-Börse abwechselnd als KI-Welle für einen der drei Trader. Kein zweiter Taktgeber parallel, sonst laufen Handelsläufe doppelt.
 
 ### Update einspielen
 
 Änderungen kommen ausschließlich über GitHub:
 
 1. Pull Request auf GitHub prüfen und mergen.
-2. Im LXC:
+2. Auf dem Server:
 
 ```
 cd /opt/micro-trader && ./deploy.sh
 ```
 
-`deploy.sh` zeigt die neuen Commits und fragt nach. Danach spielt es den Stand per Fast-Forward ein und installiert geänderte Pakete. Anschließend prüft es Syntax und Offline-Tests und startet erst dann die Dienste neu. Dateien, die ein Update aus Git entfernt (Laufzeitdaten), werden vorher gesichert und danach wieder hingelegt (`/root/mt-deploy-sicherung/`). Schlägt eine Prüfung fehl, bricht es **vor** dem Neustart ab.
+`deploy.sh` zeigt die neuen Commits und fragt nach. Danach spielt es den Stand per Fast-Forward ein und installiert geänderte Pakete. Anschließend prüft es Syntax und Offline-Tests und startet erst dann die Dienste neu. Dateien, die ein Update aus Git entfernt (Laufzeitdaten), werden vorher gesichert und danach wieder hingelegt (`~/mt-deploy-sicherung/`). Schlägt eine Prüfung fehl, bricht es **vor** dem Neustart ab.
 
 **Nicht** `git pull` verwenden. Das würde Laufzeitdateien löschen, die Git verlassen.
 
@@ -145,7 +141,7 @@ Einrichten: die App „ntfy“ installieren, ein langes zufälliges Topic abonni
 
 ## 11. Sicherheit
 
-- Geheimnisse liegen nur auf dem LXC, nie in Git: `.env` (API-Keys, SMTP), `security_users.json`, `.session_secret`, `.csrf_secret`, `.watchdog_ntfy_topic`, `nous_auth.json`, `wol-verify-config.json`.
+- Geheimnisse liegen nur auf dem Server, nie in Git: `.env` (API-Keys, SMTP), `security_users.json`, `.session_secret`, `.csrf_secret`, `.watchdog_ntfy_topic`, `nous_auth.json`, `wol-verify-config.json`.
 - **Secret erneuern:** Datei löschen und Dienst neu starten. Sie wird mit Rechten 0600 neu erzeugt.
 
 ```
@@ -186,4 +182,4 @@ rm /opt/micro-trader/.csrf_secret /opt/micro-trader/.session_secret && systemctl
 | Taildrop-Ziel für Alarme | `.watchdog_ts_target` oder `MT_TS_TARGET` |
 | ntfy-Topic | `.watchdog_ntfy_topic` |
 | PC-Erkennung (IP, MAC, WhatsApp-Ziel) | `wol-verify-config.json` (Vorlage: `wol-verify-config.example.json`) |
-| Proxmox-Host für `proxy/generate_pdf_report.py` | `MT_PROXMOX_HOST` |
+| Host für das Fernabfrage-Werkzeug `proxy/generate_pdf_report.py` | `MT_PROXMOX_HOST` |

@@ -1,0 +1,10 @@
+# Beispiel: DB-Aufraeumen (30 Tage)
+[Unit]
+Description=Micro-Trader DB-Aufraeumen (30 Tage)
+
+[Service]
+Type=oneshot
+User=microtrader
+WorkingDirectory=/opt/micro-trader
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/micro-trader/venv/bin/python mt_db_retention.py --days 30

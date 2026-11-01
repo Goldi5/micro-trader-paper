@@ -21,7 +21,7 @@ OFFLINE=(
   test_mtlog.py test_ops_center.py test_quiet_regression.py
   test_risk_regression.py test_server_security.py test_spec_deckel_kopplung.py
   test_sqli_regression.py test_tierignore.py test_timeseries.py
-  test_trader_kursausfall.py test_wochenbericht_einmal.py test_handelskosten.py test_exits.py test_earnings.py test_bericht_kennzahlen.py test_watchdog_alarme.py test_handbuch.py
+  test_trader_kursausfall.py test_wochenbericht_einmal.py test_handelskosten.py test_exits.py test_earnings.py test_bericht_kennzahlen.py test_watchdog_alarme.py test_handbuch.py test_pipeline_modi.py
   test_xss_regression.py test_zusatz.py
 )
 

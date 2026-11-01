@@ -32,25 +32,6 @@ Alle Abschnitte fehlen in `settings.json` und nutzen die Standardwerte; zum Absc
 
 Neu: `deploy.sh`, `run_tests.sh`, `requirements.txt`, GitHub Action (pyflakes + 24 Offline-Tests).
 
-## 2. Nächste Schritte im Betrieb (brauchen den LXC)
-
-1. **`mt-gate` prüfen.** Das Skript `micro-trader-scheduler-gate.py` ist für Windows geschrieben
-   (`creationflags=CREATE_NEW_PROCESS_GROUP`, `BASE=~/projects/...`) und kann unter Linux keine Pipeline
-   starten. Den Handel steuert ohnehin `mt-scheduler`. Prüfen mit
-   `systemctl cat mt-gate.service` und `journalctl -u mt-gate -n 30`. Vermutlich sollte der Timer
-   **deaktiviert** werden: `systemctl disable --now mt-gate.timer`.
-   Achtung: Würde das Skript repariert, liefe die Pipeline doppelt (Gate + Scheduler).
-2. **`mt-kiwatch`** startet alle 30 min `micro-trader-pipeline.py`. Falls ohne `--mode` (= `full`), läuft das **zusätzlich**
-   zum Scheduler (der `ki_welle` startet). Mit Fix #1 wird nicht mehr doppelt gehandelt, aber es laufen
-   unnötig viele KI-Calls. Entscheiden: kiwatch auf `--mode engine` umstellen oder abschalten.
-3. **`PYTHONUNBUFFERED=1`** in den systemd-Units setzen, damit Log-Zeilen sofort mit korrekter Zeit im Journal stehen
-   (die 52 Zeilen „in 10 Sekunden“ waren gepufferte Ausgabe).
-4. **Laufzeitdateien aus Git nehmen** (eigener PR, *nachdem* das neue `deploy.sh` auf dem LXC liegt):
-   `ki_regeln.json`, `learned_rules.json`, `pending_rules.json`, `.watchdog_state.json`,
-   `.beta_stock_cache.json`, `screener_aktien_beta.json`, `konfidenz_stats.json`, `regel_history.json`,
-   `reflexion_summary_*.md`, `audit/`. `deploy.sh` sichert und restauriert sie dabei automatisch.
-5. **`./run_tests.sh alle`** einmal auf dem LXC laufen lassen und die 13 Tests mit Live-Daten bewerten.
-
 ## 3. Code-Qualität
 
 - **230× `except …: pass`.** Genau dort haben sich die gefundenen Fehler versteckt. Schrittweise durch
@@ -90,8 +71,8 @@ Neu: `deploy.sh`, `run_tests.sh`, `requirements.txt`, GitHub Action (pyflakes + 
 
 - **Push-Benachrichtigung** bei Fehlern (z. B. ntfy oder Telegram): Pipeline-Abbruch, Provider-Ausfall,
   Drawdown-Sperre, fehlende Kurse > 30 min.
-- **Tägliches Backup** von `micro_trader.db` und den Depot-Dateien auf den Proxmox-Host
-  (z. B. per `vzdump` des LXC oder `sqlite3 .backup`).
+- **Tägliches Backup** von `micro_trader.db` und den Depot-Dateien auf einen zweiten Rechner
+  (z. B. Snapshot der VM/des Containers oder `sqlite3 .backup`).
 - **Health-Check-Seite** mit Status aller Timer und Dienste und dem Zeitpunkt des letzten erfolgreichen Laufs.
 
 ## 6. Später: Live-Handel
